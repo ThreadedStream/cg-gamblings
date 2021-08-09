@@ -4,130 +4,117 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/timeb.h>
+#include <float.h>
 
-#include "SDL2/source/include/SDL.h"
-#include <SDL2/SDL2_gfxPrimitives.h>
+#include <SDL2/SDL.h>
 
-#define WIDTH 600
-#define HEIGHT 400
+#include "render.h"
+#include "draw.h"
+#include "utils.h"
+#include "entity.h"
 
-typedef int8_t BOOL;
+
+typedef int32_t BOOL;
 #define FALSE 0 != 0
 #define TRUE  1 == 1
 
-typedef struct {
-    SDL_Window *window;
-    SDL_Surface *window_surface;
-    SDL_Renderer *renderer;
-} ContextGraphique;
+#define MIN(x, y) (x) < (y) ? (x) : (y)
 
-void abnormal_exit(ContextGraphique *context, const char* message){
-    fputs(message, stderr);
-    free(context);
-    context = NULL;
-    exit(-1);
-}
+#define RECT_SPEED 150
 
-void reclaim_context_resources(ContextGraphique* context){
-    SDL_DestroyWindow(context->window);
-    SDL_Quit();
-    free(context);
-    context = NULL;
-}
+void monitorCloseEvent(SDL_Event *event, BOOL *running);
 
-ContextGraphique* initialize_context() {
-    ContextGraphique* context = calloc(1, sizeof(ContextGraphique));
-    if (!context){
-        fputs("malloc() failed", stderr);
-        exit(-1);
-    }
-
-    context->window = SDL_CreateWindow("Sample Window",
-                                       SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED,
-                                       WIDTH, HEIGHT,
-                                       SDL_WINDOW_OPENGL);
-
-    if (!context->window){
-        abnormal_exit(context, "failed to initialize a window");
-    }
-
-    context->window_surface = SDL_GetWindowSurface(context->window);
-    if (!context->window_surface){
-        abnormal_exit(context, "failed to initialize a window surface");
-    }
-
-    context->renderer = SDL_CreateRenderer(context->window, -1, 0x0);
-    if (!context->renderer){
-        abnormal_exit(context, "failed to initialize a renderer");
-    }
-
-
-    return context;
-}
-
+void updateHero(struct Entity *entity, float delta);
 
 int main() {
     pid_t pid = getpid();
 
-    fprintf(stderr, "PID: %d", pid);
+    fprintf(stderr, "PID: %d\n", pid);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("failed to initialized video frame");
         exit(-1);
     }
 
-    SDL_Rect rect = {30,30,30, 30};
+    struct ContextGraphique *context = initializeContext();
 
-    ContextGraphique* context = initialize_context();
     SDL_Event event;
 
-    //SDL_SetRenderDrawColor(context->renderer, 255, 255, 0, 255);
     BOOL running = TRUE;
-    clock_t delta;
 
-    for (; running ;) {
-        clock_t start = clock();
+    Entity hero = {1, "Hero", {30, 30}, loadTexture(context, "assets/hero_knight.png"), updateHero};
 
-        if (SDL_PollEvent(&event)){
-            switch(event.type){
-                case SDL_KEYDOWN:
-                    switch(event.key.keysym.scancode) {
-                        case SDL_SCANCODE_ESCAPE:
-                            running = FALSE;
-                            break;
-                        case SDL_SCANCODE_D:
-                            rect.x += (int) (50 * delta);
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case SDL_WINDOWEVENT:
-                    switch(event.window.event){
-                        case SDL_WINDOWEVENT_CLOSE:
-                            running = FALSE;
-                    }
-                    break;
-            }
+    // https://gafferongames.com/post/fix_your_timestep/
+    float t = 0.0f, dt = 1.0f / 60.0f;
+
+    clock_t start = clock();
+
+    for (; running;) {
+        clock_t now = clock();
+        float frameTime = (float) (now - start) / (float) CLOCKS_PER_SEC;
+        start = now;
+
+
+        monitorCloseEvent(&event, &running);
+        while (frameTime > 0.0) {
+            float delta = MIN(frameTime, dt);
+            frameTime -= delta;
+            t += delta;
         }
 
-        SDL_RenderFillRect(context->renderer, &rect);
+        hero.update(&hero, dt);
 
-        SDL_FillRect(context->window_surface, &rect, SDL_MapRGB(context->window_surface->format, 80,180,179));
-        SDL_FillRect(context->window_surface, NULL, SDL_MapRGB(context->window_surface->format, 65,193,193));
-
-        //SDL_UpdateWindowSurface(context->window);
-        SDL_RenderPresent(context->renderer);
-
-        SDL_RenderClear(context->renderer);
-        clock_t end = clock();
-
-        //clock_t delta = (end - start) / CLOCKS_PER_SEC;
-        fprintf(stderr, "Seconds: %ld ms\n", delta);
+        blit(context, hero.texture, (int) hero.pos.x, (int) hero.pos.y);
+        render(context);
     }
 
-    reclaim_context_resources(context);
+    reclaimContextResources(context);
 
     return 0;
 }
+
+void monitorCloseEvent(SDL_Event *event, BOOL *running) {
+    if (SDL_PollEvent(event)) {
+        switch (event->type) {
+            case SDL_WINDOWEVENT:
+                switch (event->window.event) {
+                    case SDL_WINDOWEVENT_CLOSE:
+                        *running = FALSE;
+                }
+                break;
+
+        }
+    }
+
+}
+
+
+void updateHero(struct Entity *entity, float delta) {
+    SDL_Event event;
+    if (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.scancode) {
+                    case SDL_SCANCODE_D:
+                        // TODO(threadedstream): resolve a problem with a delta time
+                        entity->pos.x += (float) (RECT_SPEED * delta);
+                        break;
+                    case SDL_SCANCODE_A:
+                        entity->pos.x -= (float) (RECT_SPEED * delta);
+                        break;
+                    case SDL_SCANCODE_W:
+                        entity->pos.y -= (float) (RECT_SPEED * delta);
+                        break;
+                    case SDL_SCANCODE_S:
+                        entity->pos.y += (float) (RECT_SPEED * delta);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+}
+
+
+
