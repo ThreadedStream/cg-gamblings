@@ -18,5 +18,7 @@ struct ContextGraphique *initializeContext();
 
 void render(struct ContextGraphique *context);
 
+void clearScreen(struct ContextGraphique *context);
+
 
 #endif //PHYSC_RENDER_H

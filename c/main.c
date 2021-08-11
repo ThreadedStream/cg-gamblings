@@ -12,6 +12,7 @@
 #include "draw.h"
 #include "utils.h"
 #include "entity.h"
+#include "animation.h"
 
 
 typedef int32_t BOOL;
@@ -24,7 +25,7 @@ typedef int32_t BOOL;
 
 void monitorCloseEvent(SDL_Event *event, BOOL *running);
 
-void updateHero(struct Entity *entity, float delta);
+void updateHero(struct Entity *entity, SDL_Event *event, BOOL *running, float delta);
 
 int main() {
     pid_t pid = getpid();
@@ -40,31 +41,37 @@ int main() {
 
     SDL_Event event;
 
-    BOOL running = TRUE;
+    //BOOL running = TRUE;
 
-    Entity hero = {1, "Hero", {30, 30}, loadTexture(context, "assets/hero_knight.png"), updateHero};
+    Entity hero = {1, "Hero", {30, 30}, loadTexture(context->renderer, "assets/HeroKnight.png")};
 
     // https://gafferongames.com/post/fix_your_timestep/
     float t = 0.0f, dt = 1.0f / 60.0f;
 
     clock_t start = clock();
+    BOOL running = TRUE;
 
-    for (; running;) {
+    for (; running ;) {
         clock_t now = clock();
         float frameTime = (float) (now - start) / (float) CLOCKS_PER_SEC;
         start = now;
 
-
-        monitorCloseEvent(&event, &running);
+        //monitorCloseEvent(&event, &running);
         while (frameTime > 0.0) {
             float delta = MIN(frameTime, dt);
             frameTime -= delta;
             t += delta;
         }
 
-        hero.update(&hero, dt);
+        updateHero(&hero, &event, &running, dt);
+        clearScreen(context);
 
-        blit(context, hero.texture, (int) hero.pos.x, (int) hero.pos.y);
+        uint32_t seconds = (SDL_GetTicks() / 1000) % 10;
+        //renderSpriteAt(context->renderer, hero.texture, 0, 0, 50, 55);
+        SDL_Rect srcrect = {0, 0, 100, 55};
+        SDL_Rect destrect = {seconds, 0, 100, 55};
+        SDL_RenderCopy(context->renderer, hero.texture, &srcrect, &destrect);
+
         render(context);
     }
 
@@ -76,25 +83,16 @@ int main() {
 void monitorCloseEvent(SDL_Event *event, BOOL *running) {
     if (SDL_PollEvent(event)) {
         switch (event->type) {
-            case SDL_WINDOWEVENT:
-                switch (event->window.event) {
-                    case SDL_WINDOWEVENT_CLOSE:
-                        *running = FALSE;
-                }
-                break;
-
         }
     }
-
 }
 
 
-void updateHero(struct Entity *entity, float delta) {
-    SDL_Event event;
-    if (SDL_PollEvent(&event)) {
-        switch (event.type) {
+void updateHero(struct Entity *entity, SDL_Event *event, BOOL *running, float delta) {
+    if (SDL_PollEvent(event)) {
+        switch (event->type) {
             case SDL_KEYDOWN:
-                switch (event.key.keysym.scancode) {
+                switch (event->key.keysym.scancode) {
                     case SDL_SCANCODE_D:
                         // TODO(threadedstream): resolve a problem with a delta time
                         entity->pos.x += (float) (RECT_SPEED * delta);
@@ -110,6 +108,12 @@ void updateHero(struct Entity *entity, float delta) {
                         break;
                     default:
                         break;
+                }
+                break;
+            case SDL_WINDOWEVENT:
+                switch (event->window.event) {
+                    case SDL_WINDOWEVENT_CLOSE:
+                        *running = FALSE;
                 }
                 break;
         }

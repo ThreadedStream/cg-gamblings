@@ -3,7 +3,6 @@
 struct ContextGraphique *initializeContext() {
     char err[512];
 
-    // Initialize SDL_image. Allow for png and jpg assets
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
     struct ContextGraphique *context = calloc(1, sizeof(struct ContextGraphique));
     if (!context) {
@@ -41,7 +40,6 @@ void clearScreen(struct ContextGraphique *context) {
 
 
 void render(struct ContextGraphique *context) {
-
     SDL_SetRenderDrawColor(context->renderer, 255, 255, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(context->renderer, 200, 200, 500, 500);
     SDL_RenderPresent(context->renderer);

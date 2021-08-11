@@ -3,8 +3,7 @@
 
 #include "render.h"
 #include <unistd.h>
-
-SDL_Texture* loadTexture(struct ContextGraphique* context, const char* path);
+#include "asset_loader.h"
 
 void blit(struct ContextGraphique* context, SDL_Texture* texture, int x, int y);
 
