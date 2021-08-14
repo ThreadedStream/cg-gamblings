@@ -50,8 +50,10 @@ int main() {
 
     clock_t start = clock();
     BOOL running = TRUE;
-
-    for (; running ;) {
+    uint32_t seconds = 0;
+    animation_params_t  idleAnimParams = {200, 8, 10, 100, 55};
+    int animationStep = 100;
+    for (; running;) {
         clock_t now = clock();
         float frameTime = (float) (now - start) / (float) CLOCKS_PER_SEC;
         start = now;
@@ -66,12 +68,9 @@ int main() {
         updateHero(&hero, &event, &running, dt);
         clearScreen(context);
 
-        uint32_t seconds = (SDL_GetTicks() / 1000) % 10;
-        //renderSpriteAt(context->renderer, hero.texture, 0, 0, 50, 55);
-        SDL_Rect srcrect = {0, 0, 100, 55};
-        SDL_Rect destrect = {seconds, 0, 100, 55};
-        SDL_RenderCopy(context->renderer, hero.texture, &srcrect, &destrect);
-
+        uint32_t millis = SDL_GetTicks();
+        seconds = millis / 1000;
+        animate(context->renderer, hero.texture, &idleAnimParams);
         render(context);
     }
 
