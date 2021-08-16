@@ -3,9 +3,8 @@
 
 #include <SDL_image.h>
 #include "utils.h"
+#include "defs.h"
 
-#define WIDTH 600
-#define HEIGHT 400
 
 
 typedef struct ContextGraphique {

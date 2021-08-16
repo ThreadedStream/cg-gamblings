@@ -3,6 +3,9 @@
 
 
 #include <SDL_render.h>
+#include "defs.h"
+
+
 
 typedef struct animation_params_t{
     // inverseFrameSpeed determines how fast the animation should be played
@@ -16,13 +19,13 @@ typedef struct animation_params_t{
     int32_t width;
     // height determines the height of a single sprite in a sprite sheet
     int32_t height;
-    // counter determines a space between individual frames
-    uint32_t counter;
-    // currentFrame determines a frame being played at the moment
-    uint32_t currentFrame;
-    int32_t  animationY;
 }animation_params_t;
 
-void animate(SDL_Renderer* renderer, SDL_Texture* texture,animation_params_t *animParams);
+void play(SDL_Renderer* renderer, SDL_Texture* texture,const animation_params_t *animParams);
+
+void animationShowcase(SDL_Renderer* renderer, SDL_Texture *texture,const animation_params_t *animParams);
+
+void addAnimation(const char* animationName, int32_t startingFrameX, int32_t startingFrameY);
+
 
 #endif //PHYSC_ANIMATION_H
