@@ -10,6 +10,8 @@ static SDL_Texture* loadTexture(SDL_Renderer *renderer, const char* path) {
     memset(buffer, 0, sizeof(buffer));
 
     getcwd(buffer, sizeof(buffer));
+
+    // use parentDir, since executable is in cmake-build-debug folder
     sprintf(buffer, "%s/%s", parentDir(buffer), path);
 
 

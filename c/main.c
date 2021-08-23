@@ -7,6 +7,7 @@
 #include <float.h>
 
 #include <SDL2/SDL.h>
+#include <SDL_ttf.h>
 
 #include "render.h"
 #include "draw.h"
@@ -19,6 +20,11 @@ typedef int32_t BOOL;
 #define FALSE 0 != 0
 #define TRUE  1 == 1
 
+// Hacky work-around to generate compile-time errors
+// It's very weird that gcc does not generate an error when declaring zero-sized arrays
+#define STATIC_ASSERT(condition) char arr[(condition) - 1]
+
+
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
 #define RECT_SPEED 150
@@ -28,6 +34,7 @@ void monitorCloseEvent(SDL_Event *event, BOOL *running);
 void updateHero(struct Entity *entity, SDL_Event *event, BOOL *running, float delta);
 
 int main() {
+
     pid_t pid = getpid();
 
     fprintf(stderr, "PID: %d\n", pid);
@@ -45,9 +52,17 @@ int main() {
 
     Entity hero = {1, "Hero", {30, 30}, loadTexture(context->renderer, "assets/HeroKnight.png")};
 
+    TTF_Font *surumaFont = TTF_OpenFont("/usr/share/fonts/truetype/lato/Lato-Hairline.ttf", 24);
+
+    SDL_Color White = {255, 255, 255};
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(surumaFont, "Your are fucking looser", White);
+
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(context->renderer, surfaceMessage);
+
     // https://gafferongames.com/post/fix_your_timestep/
     float t = 0.0f, dt = 1.0f / 60.0f;
-
+    int animationFrame = 0, animationStep = 0;
     clock_t start = clock();
     BOOL running = TRUE;
 
@@ -64,15 +79,24 @@ int main() {
         }
 
         updateHero(&hero, &event, &running, dt);
-        clearScreen(context);
 
-        uint32_t seconds = (SDL_GetTicks() / 1000) % 10;
+        clearScreen(context);
+        animationStep = 100 * (animationFrame % 10);
         //renderSpriteAt(context->renderer, hero.texture, 0, 0, 50, 55);
-        SDL_Rect srcrect = {0, 0, 100, 55};
-        SDL_Rect destrect = {seconds, 0, 100, 55};
+        SDL_Rect srcrect = {animationStep, 0, 100, 55};
+        SDL_Rect destrect = {0, 0, 100, 55};
+
         SDL_RenderCopy(context->renderer, hero.texture, &srcrect, &destrect);
 
+        SDL_Rect Message_rect; //create a rect
+        Message_rect.x = 0;  //controls the rect's x coordinate
+        Message_rect.y = 0; // controls the rect's y coordinte
+        Message_rect.w = 100; // controls the width of the rect
+        Message_rect.h = 100; // controls the height of the rect
+
+        SDL_RenderCopy(context->renderer, Message, NULL, &Message_rect);
         render(context);
+        animationFrame++;
     }
 
     reclaimContextResources(context);
