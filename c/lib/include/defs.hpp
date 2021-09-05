@@ -1,14 +1,15 @@
 #pragma once
 
 #include "../../extern/box2d/include/box2d/box2d.h"
-#include <stdint.h>
+
+#if defined __GNUC__
+#define FORCE_INLINE __attribute__((always_inline))
+#elif defined __clang__
+#define FORCE_INLINE inline
+#endif
 
 #define WIDTH 600
 #define HEIGHT 400
-
-typedef int32_t BOOL;
-#define FALSE 0 != 0
-#define TRUE  1 == 1
 
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 

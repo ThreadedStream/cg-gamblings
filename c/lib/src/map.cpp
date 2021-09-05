@@ -1,6 +1,5 @@
-#include "../include/utils.h"
 #include "../include/map.h"
-
+#include <math.h>
 
 int32_t hash(const char* key, int32_t bounds){
     int32_t index = 0;

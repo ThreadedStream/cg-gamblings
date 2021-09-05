@@ -1,22 +1,24 @@
 set(PHYSC_SRC_FILES
-        src/animation.c
-        src/draw.c
-        src/main.c
-        src/map.c
-        src/memory.c
-        src/render.c
-        src/utils.c)
+        src/animation.cpp
+        src/draw.cpp
+        src/main.cpp
+        src/map.cpp
+        src/memory.cpp
+        src/render.cpp
+        )
 
 set(PHYSC_HEADER_FILES
         include/animation.h
         include/asset_loader.h
-        include/defs.h
+        include/defs.hpp
         include/draw.h
         include/entity.h
         include/map.h
         include/memory.h
         include/render.h
-        include/utils.h)
+        )
+
+set(CMAKE_CXX_FLAGS "-Wno-unused-label -Wall")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -33,14 +35,17 @@ set(SDL_INCLUDE /usr/local/include/SDL2)
 
 set(BOX2D_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/extern/box2d/include)
 
-add_library(physc ${PHYSC_SRC_FILES} ${PHYSC_HEADER_FILES})
+add_executable(physc ${PHYSC_SRC_FILES} ${PHYSC_HEADER_FILES})
 target_include_directories(physc
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         ${SDL_INCLUDE}
+        ${BOX2D_INCLUDE}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        "/usr/include/c++"
+        "/usr/include/"
         )
 
 target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${SDL2_IMAGE_LIBRARIES})

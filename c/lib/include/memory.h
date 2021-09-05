@@ -1,8 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include <stdlib.h>
-#include <assert.h>
 
 void *fixed_alloc(int64_t size, int64_t alignment);
 

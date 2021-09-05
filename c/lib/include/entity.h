@@ -2,32 +2,32 @@
 
 #pragma once
 
-typedef struct Position {
+struct Position {
     union {
-        struct{
-           float x, y;
+        struct {
+            float x, y;
         };
         float pos[2];
     };
-} Position;
+};
 
-typedef struct Movement {
+struct Movement {
     float speed;
     float acceleration;
-} Movement;
+};
 
 
-typedef struct Entity {
+struct Entity {
     // Each entity possesses a unique id
-    uint32_t id;
+    uint64_t id; // 8
     // Human-readable name of an entity
-    const char *name;
+    const char *name; // 8
     // Position of an entity
-    Position pos;
+    Position pos; // 8
     // Associated texture for an entity
-    SDL_Texture *texture;
+    SDL_Texture *texture; // 8
 
     // Callback for update method supposed to be called once per frame
-    void (*update)(struct Entity *entity, float delta);
-} Entity;
+    void (*update)(struct Entity *entity, float delta); // 8
+};
 
