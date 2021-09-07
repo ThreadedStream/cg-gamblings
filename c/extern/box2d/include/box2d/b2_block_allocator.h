@@ -50,11 +50,11 @@ public:
 
 private:
 
-	b2Chunk* m_chunks;
-	int32 m_chunkCount;
-	int32 m_chunkSpace;
+	b2Chunk* m_chunks; // 8
+	int32 m_chunkCount; // 4
+	int32 m_chunkSpace; // 4
 
-	b2Block* m_freeLists[b2_blockSizeCount];
+	b2Block* m_freeLists[b2_blockSizeCount]; // 8 * b2_blockSizeCount
 };
 
 #endif

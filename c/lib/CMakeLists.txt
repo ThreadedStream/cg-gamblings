@@ -1,3 +1,7 @@
+set(BOX2D_INCLUDE ../extern/box2d/include)
+
+set(BOX2D_SRC ${CMAKE_CURRENT_SOURCE_DIR}/extern/box2d/src)
+
 set(PHYSC_SRC_FILES
         src/animation.cpp
         src/draw.cpp
@@ -33,8 +37,7 @@ set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
 
 set(SDL_INCLUDE /usr/local/include/SDL2)
 
-set(BOX2D_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/extern/box2d/include)
-
+set(BOX2D_SHARED_LIB /home/glasser/toys/godot-math/c/extern/box2d/build/bin/libbox2d.so)
 add_executable(physc ${PHYSC_SRC_FILES} ${PHYSC_HEADER_FILES})
 target_include_directories(physc
         PUBLIC
@@ -42,16 +45,17 @@ target_include_directories(physc
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         ${SDL_INCLUDE}
         ${BOX2D_INCLUDE}
+        ${BOX2D_SRC}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         "/usr/include/c++"
         "/usr/include/"
-        )
+)
 
-target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${SDL2_IMAGE_LIBRARIES})
+target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES})
 
 set_target_properties(physc PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED yes
-        )
+)
 

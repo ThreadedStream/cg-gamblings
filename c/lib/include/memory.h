@@ -1,9 +1,19 @@
 #pragma once
 
-#include <stdint.h>
-
-void *fixed_alloc(int64_t size, int64_t alignment);
-
-void fixed_dealloc(void* ptr, int64_t alignment);
+#include "defs.hpp"
 
 
+class AllocatorWrapper {
+public:
+    static AllocatorWrapper* getSingleton();
+
+    AllocatorWrapper();
+
+    inline void *allocate(size_t size) { return allocator.Allocate(size); }
+
+    inline void deallocate(void* ptr, size_t size) { return allocator.Free(ptr, size); }
+
+private:
+    static AllocatorWrapper* singleton;
+    b2BlockAllocator allocator;
+};

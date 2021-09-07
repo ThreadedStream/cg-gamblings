@@ -111,7 +111,7 @@ b2Body::~b2Body()
 void b2Body::SetType(b2BodyType type)
 {
 	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	if (m_world->IsLocked())
 	{
 		return;
 	}
@@ -165,7 +165,7 @@ void b2Body::SetType(b2BodyType type)
 b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 {
 	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	if (m_world->IsLocked())
 	{
 		return nullptr;
 	}
@@ -218,7 +218,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	}
 
 	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	if (m_world->IsLocked())
 	{
 		return;
 	}

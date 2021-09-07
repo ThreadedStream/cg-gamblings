@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../../extern/box2d/include/box2d/box2d.h"
+#include "memory.h"
+
 
 #if defined __GNUC__
 #define FORCE_INLINE __attribute__((always_inline))
@@ -10,6 +12,9 @@
 
 #define WIDTH 600
 #define HEIGHT 400
+
+static const int half_width = WIDTH / 2;
+static const int half_height = HEIGHT / 2;
 
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 

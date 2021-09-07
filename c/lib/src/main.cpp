@@ -14,8 +14,7 @@
 #include "../include/draw.h"
 #include "../include/entity.h"
 #include "../include/animation.h"
-#include "../include/b2_allocator.h"
-#include "memory.h"
+#include "../include/memory.h"
 
 #define DUMMY_CONST 10
 
@@ -47,6 +46,8 @@ void handleInput(struct Entity *entity, SDL_Event *event, bool *running, float d
 
 int main(int argc, const char* argv[]) {
 
+    AllocatorWrapper allocator_wrapper;
+
     pid_t pid = getpid();
 
     fprintf(stderr, "PID: %d\n", pid);
@@ -56,8 +57,10 @@ int main(int argc, const char* argv[]) {
         exit(-1);
     }
 
+    auto context_size = sizeof(Context);
+    Context context;
 
-    Context *context = static_cast<Context*>(B2Allocator::allocate<sizeof(Context)>());
+    Drawing drawing;
 
     SDL_Event event;
 
@@ -65,18 +68,20 @@ int main(int argc, const char* argv[]) {
 
 //    Entity hero = {1, "Hero", {30, 30}, loadTexture(context->context_renderer(), "assets/HeroKnight.png")};
 
-    TTF_Font *surumaFont = TTF_OpenFont("/usr/share/fonts/truetype/lato/Lato-Hairline.ttf", 24);
+    TTF_Font *font = TTF_OpenFont("/usr/share/fonts/truetype/lato/Lato-Hairline.ttf", 24);
 
-    SDL_Color White = {255, 255, 255};
+    SDL_Color white_color = {255, 255, 255};
 
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(surumaFont, "Your are fucking looser", White);
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "Your are fucking looser", white_color);
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(context->context_renderer(), surfaceMessage);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(context.context_renderer(), surfaceMessage);
 
     // https://gafferongames.com/post/fix_your_timestep/
     float t = 0.0f, dt = 1.0f / 60.0f;
     int animationFrame = 0, animationStep = 0;
     clock_t start = clock();
+
+    drawing.drawCircle(&context, 10.0f);
 
     for (; running ;) {
         clock_t now = clock();
@@ -93,7 +98,7 @@ int main(int argc, const char* argv[]) {
     //    updateHero(&hero, &event, &running, dt);
 
         monitorCloseEvent(&event, &running);
-        context->clearScreen();
+        context.clearScreen();
         animationStep = 100 * (animationFrame % 10);
 //        renderSpriteAt(context->context_renderer(), hero.texture, 0, 0, 50, 55);
         SDL_Rect src_rect =  {animationStep, 0, 100, 55};
@@ -103,23 +108,27 @@ int main(int argc, const char* argv[]) {
 
         SDL_Rect message_rect; //create a rect
         message_rect.x = 0;  //controls the rect's x coordinate
-        message_rect.y = 0; // controls the rect's y coordinte
+        message_rect.y = 0; // controls the rect's y coordinate
         message_rect.w = 100; // controls the width of the rect
         message_rect.h = 100; // controls the height of the rect
 
-        SDL_RenderCopy(context->context_renderer(), texture, NULL, &message_rect);
-        context->render();
+        SDL_RenderCopy(context.context_renderer(), texture, NULL, &message_rect);
+        context.render();
         animationFrame++;
     }
-
-    delete context;
-
 }
 
 
 void monitorCloseEvent(SDL_Event *event, bool *running) {
     if (SDL_PollEvent(event)) {
         switch (event->type) {
+            case SDL_KEYDOWN:
+                switch (event->key.keysym.scancode) {
+                    case SDL_SCANCODE_ESCAPE:
+                        *running = false;
+                    default:
+                        return;
+                }
             case SDL_WINDOWEVENT:
                 switch (event->window.event) {
                     case SDL_WINDOWEVENT_CLOSE:

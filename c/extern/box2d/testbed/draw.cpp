@@ -771,7 +771,7 @@ void DebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
 //
 void DebugDraw::DrawString(int x, int y, const char* string, ...)
 {
-	if (m_showUI == false)
+	if (!m_showUI)
 	{
 		return;
 	}
