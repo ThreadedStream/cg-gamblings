@@ -8,7 +8,8 @@ public:
 
     void loadTextureAndBlit(Context* context, const char* path, int x, int y);
 
-    void drawCircle(Context* context, float radius);
+    // not really random
+    SDL_Point* randomTriangleData();
 };
 
 

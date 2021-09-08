@@ -13,7 +13,7 @@ public:
         reclaimResources();
     }
 
-    void render();
+    void render(const SDL_Point* draw_points, int count);
 
     void clearScreen();
 

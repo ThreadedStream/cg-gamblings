@@ -29,15 +29,17 @@ find_package(SDL2_image REQUIRED)
 
 if (USING_LAPTOP)
     set(SDL_LIB /usr/local/lib/libSDL2.so)
+    set(SDL_FONT_LIB /usr/local/lib/libSDL2_ttf.so)
+    set(BOX2D_SHARED_LIB /home/threadedstream/toys/physc/physc/extern/box2d/build/bin/libbox2d.so)
 else()
     set(SDL_LIB /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so)
+    set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
+    set(BOX2D_SHARED_LIB ../extern/box2d/build/bin/libbox2d.so)
 endif()
 
-set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
 
 set(SDL_INCLUDE /usr/local/include/SDL2)
 
-set(BOX2D_SHARED_LIB /home/glasser/toys/godot-math/c/extern/box2d/build/bin/libbox2d.so)
 add_executable(physc ${PHYSC_SRC_FILES} ${PHYSC_HEADER_FILES})
 target_include_directories(physc
         PUBLIC
@@ -50,12 +52,12 @@ target_include_directories(physc
         ${CMAKE_CURRENT_SOURCE_DIR}
         "/usr/include/c++"
         "/usr/include/"
-)
+        )
 
 target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES})
 
 set_target_properties(physc PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED yes
-)
+        )
 

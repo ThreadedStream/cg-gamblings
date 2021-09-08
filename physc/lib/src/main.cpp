@@ -8,7 +8,6 @@
 
 
 #include <SDL2/SDL.h>
-#include <SDL_ttf.h>
 
 #include "../include/render.h"
 #include "../include/draw.h"
@@ -19,6 +18,12 @@
 #define DUMMY_CONST 10
 
 char err[512];
+
+static SDL_Point draw_points[3] = {
+        {150, 150},
+        {150, 200},
+        {200, 150}
+};
 
 #define BENCHMARK_MALLOC(count) \
     for (int i = 0; i < (count); ++i){ \
@@ -66,22 +71,14 @@ int main(int argc, const char* argv[]) {
 
     bool running = true;
 
-//    Entity hero = {1, "Hero", {30, 30}, loadTexture(context->context_renderer(), "assets/HeroKnight.png")};
-
-    TTF_Font *font = TTF_OpenFont("/usr/share/fonts/truetype/lato/Lato-Hairline.ttf", 24);
-
     SDL_Color white_color = {255, 255, 255};
-
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "Your are fucking looser", white_color);
-
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(context.context_renderer(), surfaceMessage);
 
     // https://gafferongames.com/post/fix_your_timestep/
     float t = 0.0f, dt = 1.0f / 60.0f;
     int animationFrame = 0, animationStep = 0;
     clock_t start = clock();
 
-    drawing.drawCircle(&context, 10.0f);
+    auto triangle_data = drawing.randomTriangleData();
 
     for (; running ;) {
         clock_t now = clock();
@@ -112,8 +109,7 @@ int main(int argc, const char* argv[]) {
         message_rect.w = 100; // controls the width of the rect
         message_rect.h = 100; // controls the height of the rect
 
-        SDL_RenderCopy(context.context_renderer(), texture, NULL, &message_rect);
-        context.render();
+        context.render(triangle_data, 3);
         animationFrame++;
     }
 }
