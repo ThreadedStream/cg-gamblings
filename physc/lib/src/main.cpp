@@ -80,6 +80,7 @@ int main(int argc, const char* argv[]) {
 
     auto triangle_data = drawing.randomTriangleData();
 
+
     for (; running ;) {
         clock_t now = clock();
         float frameTime = (float) (now - start) / (float) CLOCKS_PER_SEC;
@@ -108,10 +109,12 @@ int main(int argc, const char* argv[]) {
         message_rect.y = 0; // controls the rect's y coordinate
         message_rect.w = 100; // controls the width of the rect
         message_rect.h = 100; // controls the height of the rect
+        drawing.drawCircle(context.context_renderer(), half_width, half_height, 5);
 
-        context.render(triangle_data, 3);
         animationFrame++;
     }
+
+    free(triangle_data);
 }
 
 

@@ -20,6 +20,7 @@ set(PHYSC_HEADER_FILES
         include/map.h
         include/memory.h
         include/render.h
+        include/broker.h
         )
 
 set(CMAKE_CXX_FLAGS "-Wno-unused-label -Wall")
@@ -34,7 +35,7 @@ if (USING_LAPTOP)
 else()
     set(SDL_LIB /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so)
     set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
-    set(BOX2D_SHARED_LIB ../extern/box2d/build/bin/libbox2d.so)
+    set(BOX2D_SHARED_LIB /home/glasser/toys/physc/physc/extern/box2d/build/bin/libbox2d.so)
 endif()
 
 

@@ -62,8 +62,7 @@ b2World *begetBox2d() {
 
 // TODO(threadedstream): how does vptr table work in C++?
 void Context::render(const SDL_Point* draw_points, int count) {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderDrawPoints(renderer, draw_points, count);
+
     SDL_RenderPresent(renderer);
 }
 
