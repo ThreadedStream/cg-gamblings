@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../extern/box2d/include/box2d/box2d.h"
+#include <glm.hpp>
 #include "memory.h"
 
 
@@ -24,3 +25,5 @@ static const int half_height = HEIGHT / 2;
 
 #define STATIC_ASSERT(condition) char arr[(condition) - 1];
 
+#define likely(x) __builtin_expect((x), 1)
+#define unlikely(x) __builtin_expect((x), 0)

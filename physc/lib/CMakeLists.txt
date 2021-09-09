@@ -1,6 +1,9 @@
 set(BOX2D_INCLUDE ../extern/box2d/include)
 
+set(GLM_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glm/glm)
+
 set(BOX2D_SRC ${CMAKE_CURRENT_SOURCE_DIR}/extern/box2d/src)
+
 
 set(PHYSC_SRC_FILES
         src/animation.cpp
@@ -21,6 +24,7 @@ set(PHYSC_HEADER_FILES
         include/memory.h
         include/render.h
         #include/broker.h
+        include/ray.h
         )
 
 set(CMAKE_CXX_FLAGS "-Wno-unused-label -Wall")
@@ -31,13 +35,13 @@ find_package(SDL2_image REQUIRED)
 if (USING_LAPTOP)
     set(SDL_LIB /usr/local/lib/libSDL2.so)
     set(SDL_FONT_LIB /usr/local/lib/libSDL2_ttf.so)
-    set(BOX2D_SHARED_LIB /home/threadedstream/toys/physc/physc/extern/box2d/build/bin/libbox2d.so)
 else()
     set(SDL_LIB /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so)
     set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
-    set(BOX2D_SHARED_LIB /home/glasser/toys/physc/physc/extern/box2d/build/bin/libbox2d.so)
 endif()
 
+set(GLM_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/glm/build/glm/libglm_shared.so)
+set(BOX2D_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/box2d/build/bin/libbox2d.so)
 
 set(SDL_INCLUDE /usr/local/include/SDL2)
 
@@ -47,6 +51,7 @@ target_include_directories(physc
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         ${SDL_INCLUDE}
+        ${GLM_INCLUDE}
         ${BOX2D_INCLUDE}
         ${BOX2D_SRC}
         PRIVATE
@@ -55,7 +60,7 @@ target_include_directories(physc
         "/usr/include/"
         )
 
-target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES})
+target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES} ${GLM_SHARED_LIB})
 
 set_target_properties(physc PROPERTIES
         CXX_STANDARD 17
