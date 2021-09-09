@@ -78,8 +78,19 @@ int main(int argc, const char* argv[]) {
     int animationFrame = 0, animationStep = 0;
     clock_t start = clock();
 
-    auto triangle_data = drawing.randomTriangleData();
+    //auto triangle_data = drawing.randomTriangleData();
+    b2Vec2 box_pos{half_width + 10, half_height};
 
+    SDL_Rect box;
+
+    box.x = static_cast<int32_t>(box_pos.x);
+    box.y = static_cast<int32_t>(box_pos.y);
+
+    box.w = static_cast<int32_t>(50);
+    box.h = static_cast<int32_t>(50);
+
+
+    drawing.drawCircle(context.context_renderer(), half_width, half_height, 20);
 
     for (; running ;) {
         clock_t now = clock();
@@ -104,17 +115,23 @@ int main(int argc, const char* argv[]) {
 
         //SDL_RenderCopy(context->context_renderer(), hero.texture, &srcrect, &destrect);
 
+//        SDL_SetRenderDrawColor(context.context_renderer(), 255, 255, 0, SDL_ALPHA_OPAQUE);
+//        SDL_RenderDrawPoints(context.context_renderer(), circle_data, 112);
+        SDL_SetRenderDrawColor(context.context_renderer(), 255, 0, 0, SDL_ALPHA_OPAQUE);
+        SDL_RenderFillRect(context.context_renderer(), &box);
+        SDL_RenderPresent(context.context_renderer());
+
         SDL_Rect message_rect; //create a rect
         message_rect.x = 0;  //controls the rect's x coordinate
         message_rect.y = 0; // controls the rect's y coordinate
         message_rect.w = 100; // controls the width of the rect
         message_rect.h = 100; // controls the height of the rect
-        drawing.drawCircle(context.context_renderer(), half_width, half_height, 5);
+
 
         animationFrame++;
     }
 
-    free(triangle_data);
+    //free(circle_data);
 }
 
 

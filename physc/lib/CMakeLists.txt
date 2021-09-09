@@ -20,7 +20,7 @@ set(PHYSC_HEADER_FILES
         include/map.h
         include/memory.h
         include/render.h
-        include/broker.h
+        #include/broker.h
         )
 
 set(CMAKE_CXX_FLAGS "-Wno-unused-label -Wall")
