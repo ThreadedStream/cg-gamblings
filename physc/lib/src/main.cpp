@@ -8,10 +8,9 @@
 
 #include "../include/render.h"
 #include "../include/draw.h"
-#include "../include/entity.h"
-#include "../include/animation.h"
 #include "../include/ray.h"
 #include "../include/sphere.h"
+
 
 char err[512];
 
@@ -62,8 +61,7 @@ int main(int argc, const char* argv[]) {
     Ray r{glm::vec3{1, 1, 1}, glm::vec3{0, 0, -1}};
     Sphere sphere {glm::vec3{0, 0, -1}, 25};
 
-    float t0, t1;
-    r.intersectsSphere(sphere, t0, t1);
+    r.castNumerousRaysIntoScene(1200, 600);
 
     for (; running ;) {
         clock_t start = clock();

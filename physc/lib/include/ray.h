@@ -2,54 +2,38 @@
 
 #include "sphere.h"
 
+#include <fstream>
+
 class Ray {
 public:
-    explicit Ray(const glm::vec3& origin,const glm::vec3& direction):
-        origin_{origin}, direction_{direction} {};
+    explicit Ray(const glm::vec3 &origin, const glm::vec3 &direction) :
+            origin_{origin}, direction_{direction} {};
 
-    inline glm::vec3 at(float t) { return origin_ + (direction_ * t); }
+    template<bool normalize_direction=false>
+    inline glm::vec3 at(float t) noexcept { return origin_ + (direction_ * t); }
 
-    [[nodiscard]] inline glm::vec3 origin() const noexcept { return origin_; }
-    [[nodiscard]] inline glm::vec3 direction() const noexcept { return direction_; }
 
-    bool intersectsSphere(const Sphere& sphere, float& t0, float& t1) {
+    [[nodiscard]] inline glm::vec3& origin() noexcept { return origin_; }
 
-        // c_rad - radius of a sphere
-        // c_rad_sqr - squared radius of a sphere
-        // c_r - vector from center of a sphere to the origin of a ray
-        // dir_mag_sqr - squared magnitude of a ray's direction vector (dot of dir vector with itself)
-        // TODO(threadedstream): comment that out properly
-        // TODO(threadedstream): try sphere at (0, 0, -1)
-        int32_t c_rad = sphere.radius();
-        int32_t c_rad_sqr = c_rad * c_rad;
-        glm::vec3 c_r = sphere.center() - origin_;
-        // a
-        const float dir_mag_sqr = glm::dot(direction_, direction_);
-        // c
-        const float c_r_mag_sqr = glm::dot(c_r, c_r) - static_cast<float>(c_rad_sqr);
-        // b
-        const float b = 2 * glm::dot(direction_, c_r);
+    [[nodiscard]] inline glm::vec3& direction() noexcept { return direction_; }
 
-        const float discriminant = (b * b - 4 * dir_mag_sqr * c_r_mag_sqr);
+    bool intersectsSphere(const Sphere &sphere, float& t);
 
-        if (discriminant < 0){
-            return false;
-        }
-        const float discriminant_sqrt = sqrt(discriminant);
-        t0 = (-b + discriminant_sqrt) / 2 * dir_mag_sqr;
-        t1 = (-b - discriminant_sqrt) / 2 * dir_mag_sqr;
+    void sampleRayCasting(int32_t width, int32_t height);
 
-        return true;
+    glm::vec3 determineColor(const Sphere& sphere, float& t);
+
+    void castNumerousRaysIntoScene(int32_t width, int32_t height);
+
+    inline glm::vec3 rayColor() {
+        glm::vec3 r_hat = glm::normalize(direction_);
+        const float t = 0.5f * (r_hat.y + 1.0f);
+        return interpolateBetween(glm::vec3{1.0, 1.0, 1.0}, glm::vec3(0.5, 0.3, 0.65), t);
     }
 
-    glm::vec3 getColor();
+private:
 
-    void writeSampleImage() {
-        std::ofstream out("sample.png", std::ios::out | std::ios::app);
-
-    }
-
-    void interpolateBetween(glm::vec3 from, glm::vec3 to, float t){
+    inline glm::vec3 interpolateBetween(glm::vec3 from, glm::vec3 to, float t) const noexcept {
         return (1 - t) * from + to * t;
     }
 
@@ -57,3 +41,6 @@ private:
     glm::vec3 origin_;
     glm::vec3 direction_;
 };
+
+template<>
+inline glm::vec3 Ray::at(float t) noexcept { return origin_ + (glm::normalize(direction_) * t); }
