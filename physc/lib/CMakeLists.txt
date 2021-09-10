@@ -27,7 +27,6 @@ set(PHYSC_HEADER_FILES
         include/ray.h
         )
 
-set(CMAKE_CXX_FLAGS "-Wno-unused-label -Wall")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)

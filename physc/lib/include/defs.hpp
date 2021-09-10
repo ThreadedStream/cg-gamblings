@@ -23,7 +23,6 @@ static const int half_height = HEIGHT / 2;
 
 #define ARE_INHERENT(val1, val2) sizeof(val1) == sizeof(val2)
 
-#define STATIC_ASSERT(condition) char arr[(condition) - 1];
 
 #define likely(x) __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)

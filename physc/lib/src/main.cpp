@@ -59,8 +59,8 @@ int main(int argc, const char* argv[]) {
          .h = static_cast<int32_t>(50),
     };
 
-    Ray r{glm::vec3{100, 100, 200}, glm::vec3{50, 0, 50}};
-    Sphere sphere {glm::vec3{150, 150, 250}, 10};
+    Ray r{glm::vec3{1, 1, 1}, glm::vec3{0, 0, -1}};
+    Sphere sphere {glm::vec3{0, 0, -1}, 25};
 
     float t0, t1;
     r.intersectsSphere(sphere, t0, t1);

@@ -42,6 +42,16 @@ public:
         return true;
     }
 
+    glm::vec3 getColor();
+
+    void writeSampleImage() {
+        std::ofstream out("sample.png", std::ios::out | std::ios::app);
+
+    }
+
+    void interpolateBetween(glm::vec3 from, glm::vec3 to, float t){
+        return (1 - t) * from + to * t;
+    }
 
 private:
     glm::vec3 origin_;

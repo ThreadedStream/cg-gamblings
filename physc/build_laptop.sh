@@ -1,0 +1,1 @@
+cmake -DUSING_LAPTOP=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/clang++ ..

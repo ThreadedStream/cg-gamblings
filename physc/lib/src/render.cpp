@@ -62,17 +62,18 @@ b2World *begetBox2d() {
 
 // TODO(threadedstream): how does vptr table work in C++?
 void Context::render(const SDL_Point* draw_points, int count) {
-
     SDL_RenderPresent(renderer);
 }
 
 void Context::reclaimResources() {
     if (window != nullptr) {
+        // call will happen, since definition of SDL_DestroyWindow is hindered
         SDL_DestroyWindow(window);
     }
     window = nullptr;
 
     if (renderer != nullptr) {
+        // this also won't get inlined following the previously defined reasoning
         SDL_DestroyRenderer(renderer);
     }
     renderer = nullptr;
