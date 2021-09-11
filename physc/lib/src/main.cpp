@@ -78,9 +78,7 @@ int main(int argc, const char* argv[]) {
         clock_t end = clock();
         auto elapsed = static_cast<float>(end - start) / static_cast<float>(CLOCKS_PER_SEC);
         float fps = 1 / elapsed;
-        printf("elapsed: %f, fps: %.2f\n", elapsed, fps);
     }
-
 }
 
 

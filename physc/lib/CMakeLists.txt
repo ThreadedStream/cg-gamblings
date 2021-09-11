@@ -4,7 +4,6 @@ set(GLM_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glm/glm)
 
 set(BOX2D_SRC ${CMAKE_CURRENT_SOURCE_DIR}/extern/box2d/src)
 
-
 set(PHYSC_SRC_FILES
         src/animation.cpp
         src/draw.cpp

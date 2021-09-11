@@ -13,6 +13,9 @@ public:
     }
 
     void castNumerousRaysIntoScene(const int32_t width,const int32_t height);
+
+    void sampleRayCasting(int32_t width, int32_t height);
+
 private:
     void setup(const int32_t width, const int32_t height) {
         aspect_ratio_ = static_cast<float>(width) / static_cast<float>(height);

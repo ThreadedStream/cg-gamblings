@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CLionExternalBuildManager">
     <target id="56cbb0fc-5bec-4c67-9ffe-3292cef79cd3" name="Unnamed" defaultType="TOOL">
-      <configuration id="f72bf7b3-d2c7-40d3-b6eb-583ffa504d65" name="Unnamed" />
+      <configuration id="f72bf7b3-d2c7-40d3-b6eb-583ffa504d65" name="Unnamed" toolchainName="clang" />
     </target>
   </component>
 </project>

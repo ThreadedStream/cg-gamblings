@@ -4,7 +4,7 @@ project(physc)
 set(CMAKE_CXX_STANDARD 17)
 
 # dump syntax tree for clang
-set(CLANG_FLAGS "-fdiagnostics-format=msvc -pedantic -fsave-optimization-record=yaml -foptimization-record-file=opt.log -fsanitize=address")
+set(CLANG_FLAGS "-Weverything -pedantic -g")
 set(GCC_FLAGS "-Wall")
 
 option(USING_LAPTOP "Use laptop configuration" OFF)

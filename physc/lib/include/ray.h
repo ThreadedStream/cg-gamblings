@@ -19,11 +19,7 @@ public:
 
     bool intersectsSphere(const Sphere &sphere, float& t);
 
-    void sampleRayCasting(int32_t width, int32_t height);
-
-    glm::vec3 determineColor(Ray& r, const Sphere& sphere, float& t);
-
-    void castNumerousRaysIntoScene(int32_t width, int32_t height);
+    glm::vec3 determineColor(const Sphere& sphere, float& t);
 
     inline glm::vec3 defaultColor() {
         glm::vec3 r_hat = glm::normalize(direction_);
