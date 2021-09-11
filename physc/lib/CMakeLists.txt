@@ -13,6 +13,7 @@ set(PHYSC_SRC_FILES
         src/memory.cpp
         src/render.cpp
         src/ray.cpp
+        src/camera.cpp
         )
 
 set(PHYSC_HEADER_FILES
@@ -27,6 +28,7 @@ set(PHYSC_HEADER_FILES
         #include/broker.h
         include/ray.h
         include/ppm.h
+        include/camera.h
         )
 
 

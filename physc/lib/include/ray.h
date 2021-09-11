@@ -21,11 +21,11 @@ public:
 
     void sampleRayCasting(int32_t width, int32_t height);
 
-    glm::vec3 determineColor(const Sphere& sphere, float& t);
+    glm::vec3 determineColor(Ray& r, const Sphere& sphere, float& t);
 
     void castNumerousRaysIntoScene(int32_t width, int32_t height);
 
-    inline glm::vec3 rayColor() {
+    inline glm::vec3 defaultColor() {
         glm::vec3 r_hat = glm::normalize(direction_);
         const float t = 0.5f * (r_hat.y + 1.0f);
         return interpolateBetween(glm::vec3{1.0, 1.0, 1.0}, glm::vec3(0.5, 0.3, 0.65), t);

@@ -10,7 +10,7 @@
 #include "../include/draw.h"
 #include "../include/ray.h"
 #include "../include/sphere.h"
-
+#include "../include/camera.h"
 
 char err[512];
 
@@ -58,10 +58,10 @@ int main(int argc, const char* argv[]) {
          .h = static_cast<int32_t>(50),
     };
 
-    Ray r{glm::vec3{1, 1, 1}, glm::vec3{0, 0, -1}};
-    Sphere sphere {glm::vec3{0, 0, -1}, 25};
+    Camera camera(1200, 600);
+    Sphere sphere {glm::vec3{100, 10, 100}, 25};
 
-    r.castNumerousRaysIntoScene(1200, 600);
+    camera.castNumerousRaysIntoScene(1200, 600);
 
     for (; running ;) {
         clock_t start = clock();
