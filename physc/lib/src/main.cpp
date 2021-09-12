@@ -9,7 +9,7 @@
 #include "../include/render.h"
 #include "../include/draw.h"
 #include "../include/ray.h"
-#include "../include/sphere.h"
+#include "../include/plane.h"
 #include "../include/camera.h"
 
 #include <iostream>
@@ -63,26 +63,19 @@ int main(int argc, const char* argv[]) {
     Camera camera(1200, 600);
     Sphere sphere {glm::vec3{100, 10, 100}, 25};
 
-    camera.castNumerousRaysIntoScene(1200, 600);
+    Ray r(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0, 0, -10});
+    Plane plane(glm::vec3{10.0f, 4.0f, 5.0f}, 5.0f);
 
-    glm::mat3x3 a =  {{1, 2, 3},
-                      {2, 4, 5},
-                      {5, 1, 2}};
+    const auto mat = glm::mat3x3{
+            {1, 2, 3},
+            {4, 5, 6},
+            {8, 9, 11}
+    };
 
-    glm::mat3x3 b = {{2, 4, 6},
-                     {8, 6, 2},
-                     {5, 3, 2}};
+    const auto transposed_mat = glm::transpose(mat);
 
-    std::cout<< glm::determinant(a) << '\n';
-    std::cout<< glm::determinant(b) << '\n';
-
-    glm::mat3x3 invFirst = glm::inverse(a * b);
-
-    glm::mat3x3 invSecond = glm::inverse(b) * glm::inverse(a);
-
-    bool equal = invSecond == invFirst;
-
-    std::cout << std::boolalpha << equal;
+    const float det = glm::determinant(mat);
+    const float transposed_det = glm::determinant(transposed_mat);
 #if 0
     for (; running ;) {
         clock_t start = clock();

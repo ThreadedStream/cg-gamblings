@@ -28,6 +28,7 @@ set(PHYSC_HEADER_FILES
         include/ray.h
         include/ppm.h
         include/camera.h
+        include/plane.h
         )
 
 

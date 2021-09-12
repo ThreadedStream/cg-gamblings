@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sphere.h"
+#include "plane.h"
 
 #include <fstream>
 
@@ -19,7 +20,7 @@ public:
 
     bool intersectsSphere(const Sphere &sphere, float& t);
 
-    bool intersectsPlane(const glm::vec3& plane_normal);
+    bool intersectsPlane(Plane& plane);
 
     glm::vec3 determineColor(const Sphere& sphere, float& t);
 

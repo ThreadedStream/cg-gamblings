@@ -3,9 +3,25 @@
 #include "../include/camera.h"
 
 #include <iostream>
+#include <include/plane.h>
 
-bool Ray::intersectsPlane(const glm::vec3& plane_normal) {
+// (p - p0).n = 0
+// let (p - p0) be P0P
+// P0P.n = 0 => (P0P.x * n.x) + (P0P.y * n.y) + (P0P.z * n.z) = 0
+//
 
+bool Ray::intersectsPlane(Plane& plane) {
+    //TODO(threadedstream): avoid normalizing normal each time during computations --
+    // normalize it in ctor instead
+    const glm::vec3 normalized_normal = glm::normalize(plane.normal());
+
+    // pick a random point on the plane
+    const glm::vec3 random_point = plane.chooseRandomPointOnPlane();
+
+    // WARNING(threadedstream): this code looks very subtle and does not
+    // seem to be correct approach to tackle this sort of problems.
+    // I would rather use approximate equality in this case
+    return glm::dot(random_point - origin_, normalized_normal) + plane.d() == 0.0f;
 }
 
 bool Ray::intersectsSphere(const Sphere& sphere, float& t){
@@ -21,8 +37,8 @@ bool Ray::intersectsSphere(const Sphere& sphere, float& t){
     // |CO|^2 + 2 * CO * t*dir + t^2*|dir|^2 - r^2 = 0 =>
     // t^2*dir^2 + 2 * CO * t*dir + |CO|^2 - r^2 = 0
     // where CO is a vector from center of a sphere to the origin of a ray
-    int32_t c_rad = sphere.radius(); // r
-    int32_t c_rad_sqr = c_rad * c_rad; // r * r = r^2
+    float c_rad = sphere.radius(); // r
+    float c_rad_sqr = c_rad * c_rad; // r * r = r^2
     glm::vec3 c_r =  origin_ - sphere.center(); // CA = A - C
 
     // a

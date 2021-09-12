@@ -11,8 +11,8 @@ public:
     explicit Sphere(glm::vec3 center, float rad):
     center_{center}, rad_{rad} {};
 
-    [[nodiscard]] inline const glm::vec3& center() const noexcept { return center_; }
-    [[nodiscard]] inline const float radius() const noexcept { return rad_; }
+    [[maybe_unused]] [[nodiscard]] inline const glm::vec3& center() const noexcept { return center_; }
+    [[maybe_unused]] [[nodiscard]] inline float radius() const noexcept { return rad_; }
 
 private:
     glm::vec3 center_;
