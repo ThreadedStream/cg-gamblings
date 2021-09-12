@@ -12,6 +12,8 @@
 #include "../include/sphere.h"
 #include "../include/camera.h"
 
+#include <iostream>
+
 char err[512];
 
 
@@ -63,6 +65,25 @@ int main(int argc, const char* argv[]) {
 
     camera.castNumerousRaysIntoScene(1200, 600);
 
+    glm::mat3x3 a =  {{1, 2, 3},
+                      {2, 4, 5},
+                      {5, 1, 2}};
+
+    glm::mat3x3 b = {{2, 4, 6},
+                     {8, 6, 2},
+                     {5, 3, 2}};
+
+    std::cout<< glm::determinant(a) << '\n';
+    std::cout<< glm::determinant(b) << '\n';
+
+    glm::mat3x3 invFirst = glm::inverse(a * b);
+
+    glm::mat3x3 invSecond = glm::inverse(b) * glm::inverse(a);
+
+    bool equal = invSecond == invFirst;
+
+    std::cout << std::boolalpha << equal;
+#if 0
     for (; running ;) {
         clock_t start = clock();
 
@@ -79,6 +100,7 @@ int main(int argc, const char* argv[]) {
         auto elapsed = static_cast<float>(end - start) / static_cast<float>(CLOCKS_PER_SEC);
         float fps = 1 / elapsed;
     }
+#endif
 }
 
 

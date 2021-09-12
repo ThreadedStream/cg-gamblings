@@ -19,6 +19,8 @@ public:
 
     bool intersectsSphere(const Sphere &sphere, float& t);
 
+    bool intersectsPlane(const glm::vec3& plane_normal);
+
     glm::vec3 determineColor(const Sphere& sphere, float& t);
 
     inline glm::vec3 defaultColor() {

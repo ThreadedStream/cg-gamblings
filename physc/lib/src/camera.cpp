@@ -7,7 +7,7 @@ void Camera::castNumerousRaysIntoScene(const int32_t width,const int32_t height)
     if (!manipulator.handle()) { return; }
 
     float t{0.0f}, u{0.0f}, v{0.0f};
-    Sphere sphere(0, 0, -20, 10);
+    Sphere sphere(0, 0, -20, 7);
 
     // TODO(threadedstream): Benchmark it
     for (int32_t j = height - 1; j >= 0; j--){

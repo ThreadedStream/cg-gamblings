@@ -2,6 +2,11 @@
 #include "../include/ppm.h"
 #include "../include/camera.h"
 
+#include <iostream>
+
+bool Ray::intersectsPlane(const glm::vec3& plane_normal) {
+
+}
 
 bool Ray::intersectsSphere(const Sphere& sphere, float& t){
     // Let A be the origin of ray and C be the center of a sphere, then
@@ -27,7 +32,7 @@ bool Ray::intersectsSphere(const Sphere& sphere, float& t){
     // c
     const float c = glm::dot(c_r, c_r) - static_cast<float>(c_rad_sqr); // |CO|^2 - r^2
 
-    const float discriminant = (b * b - 4 * a * c); //
+    const float discriminant = (b * b - 4 * a * c);
 
     if (discriminant < 0) {
         return false;
