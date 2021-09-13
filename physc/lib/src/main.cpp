@@ -4,6 +4,7 @@
 #include <ctime>
 #include <sys/timeb.h>
 
+// TODO(threadedstream): make the SDL a part of extern folder, as it greatly aids in portability
 #include <SDL2/SDL.h>
 
 #include "../include/render.h"
@@ -11,8 +12,10 @@
 #include "../include/ray.h"
 #include "../include/plane.h"
 #include "../include/camera.h"
+#include "../include/scene.h"
 
 #include <iostream>
+#include <memory>
 
 char err[512];
 
@@ -64,8 +67,14 @@ int main(int argc, const char* argv[]) {
     Sphere sphere {glm::vec3{100, 10, 100}, 25};
 
     Ray r(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0, 0, -10});
-    Plane plane(glm::vec3{10.0f, 4.0f, 5.0f}, 5.0f);
+    Plane plane(glm::vec3{10.0f, 4.0f, 5.0f}, glm::vec3{0.0f, 0.0f, 0.0f});
 
+
+    // TODO(threadedstream): give it a better name
+    camera.castNumerousRaysIntoScene(1200, 600);
+
+
+#if 0
     const auto mat = glm::mat3x3{
             {1, 2, 3},
             {4, 5, 6},
@@ -76,7 +85,7 @@ int main(int argc, const char* argv[]) {
 
     const float det = glm::determinant(mat);
     const float transposed_det = glm::determinant(transposed_mat);
-#if 0
+
     for (; running ;) {
         clock_t start = clock();
 

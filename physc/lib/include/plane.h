@@ -1,16 +1,17 @@
 #pragma once
 
 #include "defs.hpp"
+#include "hittable.h"
 
-class Plane {
+class Plane : public Hittable {
 public:
+    explicit Plane(const glm::vec3 &normal, const glm::vec3& point) :
+            normal_{normal}, point_{point} {};
 
+    explicit Plane(const float x, const float y, const float z, const glm::vec3& point) :
+            normal_{x, y, z}, point_{point} {};
 
-    explicit Plane(const glm::vec3 &normal, const float d) :
-            normal_{normal}, d_{d} {};
-
-    explicit Plane(const float x, const float y, const float z, const float d) :
-            normal_{x, y, z}, d_{d} {};
+    bool intersects(Ray& r, float& t, float t_min, float t_max);
 
     bool intersectsOther(const Plane &plane) {
         const glm::vec3 normalized_normal = glm::normalize(normal_);
@@ -36,9 +37,9 @@ public:
 
     [[maybe_unused]] [[nodiscard]] inline glm::vec3 &normal() noexcept { return normal_; }
 
-    [[maybe_unused]] [[nodiscard]] inline float d() const noexcept { return d_; }
+    [[maybe_unused]] [[nodiscard]] inline glm::vec3& point() noexcept { return point_; }
 
 private:
     glm::vec3 normal_;
-    float d_;
+    glm::vec3 point_;
 };

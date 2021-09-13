@@ -2,7 +2,11 @@ set(BOX2D_INCLUDE ../extern/box2d/include)
 
 set(GLM_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glm/glm)
 
-set(BOX2D_SRC ${CMAKE_CURRENT_SOURCE_DIR}/extern/box2d/src)
+set(BOX2D_SRC ${CMAKE_SOURCE_DIR}/extern/box2d/src)
+
+set(SPDLOG_INCLUDE ${CMAKE_SOURCE_DIR}/extern/spdlog/include)
+
+message(${SPDLOG_INCLUDE})
 
 set(PHYSC_SRC_FILES
         src/animation.cpp
@@ -13,6 +17,8 @@ set(PHYSC_SRC_FILES
         src/render.cpp
         src/ray.cpp
         src/camera.cpp
+        src/sphere.cpp
+        src/plane.cpp
         )
 
 set(PHYSC_HEADER_FILES
@@ -24,11 +30,13 @@ set(PHYSC_HEADER_FILES
         include/map.h
         include/memory.h
         include/render.h
-        #include/broker.h
+        include/broker.h
         include/ray.h
         include/ppm.h
         include/camera.h
         include/plane.h
+        include/scene.h
+        include/hittable.h
         )
 
 
@@ -46,24 +54,27 @@ endif()
 set(GLM_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/glm/build/glm/libglm_shared.so)
 set(BOX2D_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/box2d/build/bin/libbox2d.so)
 
+set(SPDLOG_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/spdlog/build/libspdlog.so)
+
 set(SDL_INCLUDE /usr/local/include/SDL2)
 
 add_executable(physc ${PHYSC_SRC_FILES} ${PHYSC_HEADER_FILES})
 target_include_directories(physc
         PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/lib/include>
+        ${CMAKE_CURRENT_SOURCE_DIR}
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         ${SDL_INCLUDE}
         ${GLM_INCLUDE}
         ${BOX2D_INCLUDE}
         ${BOX2D_SRC}
         PRIVATE
+        ${SPDLOG_INCLUDE}
         ${CMAKE_CURRENT_SOURCE_DIR}
         "/usr/include/c++"
         "/usr/include/"
         )
 
-target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES} ${GLM_SHARED_LIB})
+target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SPDLOG_SHARED_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES} ${GLM_SHARED_LIB})
 
 set_target_properties(physc PROPERTIES
         CXX_STANDARD 17

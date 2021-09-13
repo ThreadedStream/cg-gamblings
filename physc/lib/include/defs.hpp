@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../../extern/box2d/include/box2d/box2d.h"
+#include <box2d/box2d.h>
+#include <spdlog/spdlog.h>
 #include <glm.hpp>
 #include "memory.h"
 

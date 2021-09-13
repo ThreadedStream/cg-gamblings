@@ -13,16 +13,11 @@ public:
     template<bool normalize_direction=false>
     inline glm::vec3 at(float t) noexcept { return origin_ + (direction_ * t); }
 
-
     [[nodiscard]] inline glm::vec3& origin() noexcept { return origin_; }
 
     [[nodiscard]] inline glm::vec3& direction() noexcept { return direction_; }
 
-    bool intersectsSphere(const Sphere &sphere, float& t);
-
-    bool intersectsPlane(Plane& plane);
-
-    glm::vec3 determineColor(const Sphere& sphere, float& t);
+    glm::vec3 determineColor(bool has_intersection, float& t);
 
     inline glm::vec3 defaultColor() {
         glm::vec3 r_hat = glm::normalize(direction_);
