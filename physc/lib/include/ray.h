@@ -17,7 +17,7 @@ public:
 
     [[nodiscard]] inline glm::vec3& direction() noexcept { return direction_; }
 
-    glm::vec3 determineColor(bool has_intersection, float& t);
+    glm::vec3 determineColor(bool has_intersection, const glm::vec3& normal,  float& t);
 
     inline glm::vec3 defaultColor() {
         glm::vec3 r_hat = glm::normalize(direction_);

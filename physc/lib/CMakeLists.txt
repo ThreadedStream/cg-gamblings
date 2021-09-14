@@ -6,8 +6,6 @@ set(BOX2D_SRC ${CMAKE_SOURCE_DIR}/extern/box2d/src)
 
 set(SPDLOG_INCLUDE ${CMAKE_SOURCE_DIR}/extern/spdlog/include)
 
-message(${SPDLOG_INCLUDE})
-
 set(PHYSC_SRC_FILES
         src/animation.cpp
         src/draw.cpp
@@ -74,7 +72,7 @@ target_include_directories(physc
         "/usr/include/"
         )
 
-target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SPDLOG_SHARED_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES} ${GLM_SHARED_LIB})
+target_link_libraries(physc ${SDL_LIBRARIES} ${SDL_LIB} ${SDL_FONT_LIB} ${BOX2D_SHARED_LIB} ${SDL2_IMAGE_LIBRARIES} ${GLM_SHARED_LIB})
 
 set_target_properties(physc PROPERTIES
         CXX_STANDARD 17
