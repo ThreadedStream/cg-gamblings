@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ray.h"
+#include "scene.h"
 
 class Camera{
 public:
@@ -9,12 +10,12 @@ public:
     }
 
     [[nodiscard]] inline Ray castRay(const float u, const float v) {
-        return Ray(origin_, lower_left_corner_ + u * horizontal_ + v * vertical_ - origin_);
+        return Ray(origin_, lower_left_corner_ + (u * horizontal_) + (v * vertical_) - origin_);
     }
 
-    void castNumerousRaysIntoScene(const int32_t width,const int32_t height);
+    void castNumerousRaysIntoScene(Scene& scene, const char* output_file, int32_t width, int32_t height);
 
-    void sampleRayCasting(int32_t width, int32_t height);
+    void sampleRayCasting(const char* output_file, int32_t width, int32_t height);
 
 private:
     void setup(const int32_t width, const int32_t height) {

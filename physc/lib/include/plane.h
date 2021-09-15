@@ -11,7 +11,7 @@ public:
     explicit Plane(const float x, const float y, const float z, const glm::vec3& point) :
             normal_{x, y, z}, point_{point} {};
 
-    bool intersects(Ray& r, float& t, float t_min, float t_max);
+    bool intersects(Ray& r, float& t, float t_min, float t_max, HitRecord& hit_record);
 
     bool intersectsOther(const Plane &plane) {
         const glm::vec3 normalized_normal = glm::normalize(normal_);

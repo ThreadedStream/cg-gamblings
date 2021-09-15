@@ -1,7 +1,7 @@
 #include "../include/sphere.h"
 
 
-bool Sphere::intersects(Ray& r, float& t, const float t_min, const float t_max) {
+bool Sphere::intersects(Ray& r, float& t, const float t_min, const float t_max, HitRecord& hit_record) {
     // Let A be the origin of ray and C be the center of a sphere, then
     // CA = A - C, vector from the center of a sphere to the ray
     // (CA).(CA) - r^2 = 0, where . is a dot(scalar) product between
@@ -33,7 +33,7 @@ bool Sphere::intersects(Ray& r, float& t, const float t_min, const float t_max) 
 
     const float discriminant_sqrt = sqrt(discriminant);
     t = (-b + discriminant_sqrt) / 2 * a;
-    // TODO(threadedstream): is there a way to avoid branches
+    // TODO(threadedstream): find out a way to avoid branches
     if (t < t_min || t > t_max) {
         t = (-b - discriminant_sqrt) / 2 * a;
         if (t < t_min || t > t_max) {
@@ -41,6 +41,9 @@ bool Sphere::intersects(Ray& r, float& t, const float t_min, const float t_max) 
         }
     }
 
-    return true;
+    hit_record.t = t;
+    hit_record.intersection_point = r.at(t);
+    hit_record.set_face_normal(r.direction(), glm::normalize((hit_record.intersection_point - center_) / rad_));
 
+    return true;
 }

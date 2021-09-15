@@ -34,7 +34,7 @@ int main(int argc, const char* argv[]) {
 
     pid_t pid = getpid();
 
-    fprintf(stderr, "PID: %d\n", pid);
+    spdlog::info("PID: {}\n", pid);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("failed to initialized video frame");
@@ -63,16 +63,20 @@ int main(int argc, const char* argv[]) {
          .h = static_cast<int32_t>(50),
     };
 
+    Scene scene;
+
     Camera camera(1200, 600);
-    Sphere sphere {glm::vec3{100, 10, 100}, 25};
+    Sphere sphere1 {glm::vec3{0, 0, -100.0f}, 10.0f};
+    Sphere sphere2 {glm::vec3{0, 0, -50.0f}, 15.0f};
 
     Ray r(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0, 0, -10});
-    Plane plane(glm::vec3{10.0f, 4.0f, 5.0f}, glm::vec3{0.0f, 0.0f, 0.0f});
 
+
+    scene.addObject(&sphere1);
+    scene.addObject(&sphere2);
 
     // TODO(threadedstream): give it a better name
-    camera.castNumerousRaysIntoScene(1200, 600);
-
+    camera.castNumerousRaysIntoScene(scene, "/home/glasser/sample.ppm", 1200, 600);
 
 #if 0
     const auto mat = glm::mat3x3{

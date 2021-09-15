@@ -17,6 +17,14 @@
 static const int half_width = WIDTH / 2;
 static const int half_height = HEIGHT / 2;
 
+static constexpr float pi = 3.1415926535897932;
+
+[[maybe_unused]] static const auto to_radians = [] (float degrees) -> float{
+    return (degrees * pi) / 180.0f;
+};
+
+
+
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
 #define RECT_SPEED 150
