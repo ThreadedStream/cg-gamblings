@@ -5,6 +5,8 @@
 
 #include <fstream>
 
+class Scene;
+
 class Ray {
 public:
     explicit Ray(const glm::vec3 &origin, const glm::vec3 &direction) :
@@ -17,7 +19,7 @@ public:
 
     [[nodiscard]] inline glm::vec3& direction() noexcept { return direction_; }
 
-    glm::vec3 determineColor(bool has_intersection, const glm::vec3& normal,  float& t);
+    Color determineColor(Ray& r, Scene& scene, int32_t depth);
 
     inline glm::vec3 defaultColor() {
         glm::vec3 r_hat = glm::normalize(direction_);

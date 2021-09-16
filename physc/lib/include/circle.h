@@ -2,13 +2,6 @@
 
 #include <vector>
 
-struct Point{
-    union{
-        SDL_Point sdl_pt;
-        b2Vec2 box2d_pt;
-    };
-};
-
 struct MidPointAlgorithm;
 
 class Circle{

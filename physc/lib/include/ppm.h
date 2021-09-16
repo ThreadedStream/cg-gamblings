@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <filesystem>
 
 struct PPM {
     int32_t width = 600;
@@ -14,10 +15,15 @@ struct PPM {
 
 class PPManipulator {
 public:
-    explicit PPManipulator(const char *filename, int32_t width = 600, int32_t height = 400, float max_color_value = 260.0f) noexcept:
-            ppm_{width, height, max_color_value},
-            handle_{filename, std::ios::out | std::ios::in | std::ios::binary | std::ios::app} {
+    explicit PPManipulator(const char *filename, int32_t width = 600, int32_t height = 400,
+                           float max_color_value = 260.0f) noexcept:
+            ppm_{width, height, max_color_value} {
 
+        if (std::filesystem::exists(filename)) {
+            std::filesystem::remove(filename);
+        }
+
+        handle_.open(filename, std::ios::out | std::ios::in | std::ios::binary | std::ios::app);
         if (!handle_) {
             return;
         }
@@ -26,7 +32,7 @@ public:
     }
 
     ~PPManipulator() {
-        if (handle_){
+        if (handle_) {
             handle_.close();
         }
     }
@@ -35,17 +41,17 @@ public:
         //TODO(threadedstream): fill it
     }
 
-    void writeSingle(const glm::vec3& color) {
+    void writeSingle(const glm::vec3 &color) {
         handle_ << static_cast<int32_t>(ppm_.max_color_value * color.r) << ' '
-               << static_cast<int32_t>(ppm_.max_color_value * color.g) << ' '
-               << static_cast<int32_t>(ppm_.max_color_value * color.b)
-               << '\n';
+                << static_cast<int32_t>(ppm_.max_color_value * color.g) << ' '
+                << static_cast<int32_t>(ppm_.max_color_value * color.b)
+                << '\n';
     }
 
-    [[nodiscard]] inline std::fstream& handle() noexcept { return handle_; }
+    [[nodiscard]] inline std::fstream &handle() noexcept { return handle_; }
 
 private:
-    void writeMagic(const char* ppm_version, int32_t width, int32_t height, float max_color_value) {
+    void writeMagic(const char *ppm_version, int32_t width, int32_t height, float max_color_value) {
         handle_ << ppm_version << '\n'
                 << width << ' ' << height << '\n'
                 << static_cast<int32_t>(max_color_value) << '\n';

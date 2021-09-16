@@ -10,9 +10,15 @@
 // P0P.n = 0 => (P0P.x * n.x) + (P0P.y * n.y) + (P0P.z * n.z) = 0
 //
 
-glm::vec3 Ray::determineColor(const bool has_intersection, const glm::vec3& normal, float& t) {
-    if (has_intersection){
-        return glm::vec3{normal.x + 1.0f, normal.y + 1.0f, normal.z + 1.0f} * 2.0f;
+glm::vec3 Ray::determineColor(Ray& r, Scene& scene, const int32_t depth) {
+    HitRecord hit_record{};
+    if (depth <= 0) {
+        return Color{0.0f, 0.0f, 0.0f};
+    }
+    if (scene.getClosestT(r, hit_record)){
+        Point3 target = hit_record.intersection_point + hit_record.normal + random_point_in_unit_sphere(20);
+        auto new_ray = Ray(hit_record.intersection_point, target - hit_record.intersection_point);
+        return determineColor(new_ray, scene, depth - 1);
     }else{
         return defaultColor();
     }

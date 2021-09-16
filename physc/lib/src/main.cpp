@@ -17,6 +17,7 @@
 #include <iostream>
 #include <memory>
 
+
 char err[512];
 
 
@@ -36,10 +37,12 @@ int main(int argc, const char* argv[]) {
 
     spdlog::info("PID: {}\n", pid);
 
+#if 0
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("failed to initialized video frame");
         exit(-1);
     }
+#endif
 
     Context context;
 
@@ -65,18 +68,15 @@ int main(int argc, const char* argv[]) {
 
     Scene scene;
 
-    Camera camera(1200, 600);
-    Sphere sphere1 {glm::vec3{0, 0, -100.0f}, 10.0f};
-    Sphere sphere2 {glm::vec3{0, 0, -50.0f}, 15.0f};
-
-    Ray r(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0, 0, -10});
-
+    Camera camera(800, 600);
+    Sphere sphere1 {glm::vec3{0, 0, -1.0f}, 0.5f};
+    Sphere sphere2 {glm::vec3{-10, 0, -3.0f}, 15.0f};
 
     scene.addObject(&sphere1);
-    scene.addObject(&sphere2);
+    //scene.addObject(&sphere2);
 
     // TODO(threadedstream): give it a better name
-    camera.castNumerousRaysIntoScene(scene, "/home/glasser/sample.ppm", 1200, 600);
+    camera.castNumerousRaysIntoScene(scene, "/home/glasser/sample.ppm", 800, 600);
 
 #if 0
     const auto mat = glm::mat3x3{

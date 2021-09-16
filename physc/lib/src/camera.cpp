@@ -7,25 +7,38 @@ void Camera::castNumerousRaysIntoScene(Scene& scene, const char *output_file, co
     if (!manipulator.handle()) { return; }
 
     float u{0.0f}, v{0.0f};
-    glm::vec3 color;
+    Color color;
 
     HitRecord hit_record{};
-
+#ifdef ENABLE_ANTIALIASING
     const int64_t samples_per_pixel = 50;
+#endif
 
     const int64_t size = scene.size();
 
     const auto hittables = scene.hittables();
 
-    // TODO(threadedstream): Benchmark it
+    // TODO(threadedstream): enable omp extension
 #pragma omp parallel for
     for (int32_t j = height - 1; j >= 0; j--) {
         for (int32_t i = 0; i < width - 1; i++) {
+            #ifdef ENABLE_ANTIALIASING
+            // antialiasing stage
+            for (int64_t curr_sample = 0; curr_sample < samples_per_pixel; curr_sample++) {
+                u = static_cast<float>(i + random_double()) / static_cast<float>(width - 1);
+                v = static_cast<float>(j + random_double()) / static_cast<float>(height - 1);
+                Ray r = castRay(u, v);
+                const auto has_intersection = scene.getClosestT(r, hit_record);
+                color += r.determineColor(has_intersection, hit_record.normal, hit_record.t);
+            }
+            color /= samples_per_pixel;
+            manipulator.writeSingle(color);
+            color = {0.0f, 0.0f, 0.0f};
+            #endif
             u = static_cast<float>(i) / static_cast<float>(width - 1);
             v = static_cast<float>(j) / static_cast<float>(height - 1);
             Ray r = castRay(u, v);
-            const auto has_intersection = scene.getClosestT(r, hit_record);
-            color = r.determineColor(has_intersection, hit_record.normal, hit_record.t);
+            color = r.determineColor(r, scene, 7);
             manipulator.writeSingle(color);
         }
     }

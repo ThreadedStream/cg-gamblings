@@ -19,6 +19,8 @@ public:
         }
     }
 
+    // TODO(threadedstream): i'm not confident about proper release of
+    // upon destruction of Scene object
     ~Scene() { delete[] hittables_; }
 
     template<typename ... Args>
