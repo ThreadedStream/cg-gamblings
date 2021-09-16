@@ -18,6 +18,14 @@
 using Color = glm::vec3;
 using Point3 = glm::vec3;
 
+enum Colors {
+    WHITE,
+    BLACK
+};
+
+constexpr Color colors[2] = {Color{1.0f, 1.0f, 1.0f},
+                             Color{0.0f, 0.0f, 0.0f}};
+
 static const int half_width = WIDTH / 2;
 static const int half_height = HEIGHT / 2;
 
@@ -45,21 +53,17 @@ static const auto random_vec3 = [](double min, double max) -> glm::vec3 {
     };
 };
 
-static const auto random_point_in_unit_sphere = [] (int64_t max_iters) -> Point3 {
-    while (max_iters--){
+static const auto random_point_in_unit_sphere = []() -> Point3 {
+    while (true) {
         auto pt = random_vec3(-1, 1);
         if (glm::length(pt) >= 1) continue;
         return pt;
     }
-    // return origin upon a failure
-    return Point3{0.0f, 0.0f, 0.0f};
 };
 
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
 #define RECT_SPEED 150
-
-#define ARE_INHERENT(val1, val2) sizeof(val1) == sizeof(val2)
 
 #define likely(x) __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)

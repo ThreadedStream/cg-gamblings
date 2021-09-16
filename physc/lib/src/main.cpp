@@ -28,8 +28,7 @@ void monitorCloseEvent(SDL_Event *event, bool *running);
 void handleInput(struct Entity *entity, SDL_Event *event, bool *running, float delta);
 
 
-
-int main(int argc, const char* argv[]) {
+int main(int argc, const char *argv[]) {
 
     AllocatorWrapper allocator_wrapper;
 
@@ -60,17 +59,17 @@ int main(int argc, const char* argv[]) {
     b2Vec2 box_pos{half_width + 10, half_height};
 
     SDL_Rect box = {
-         .x = static_cast<int32_t>(box_pos.x),
-         .y = static_cast<int32_t>(box_pos.y),
-         .w = static_cast<int32_t>(50),
-         .h = static_cast<int32_t>(50),
+            .x = static_cast<int32_t>(box_pos.x),
+            .y = static_cast<int32_t>(box_pos.y),
+            .w = static_cast<int32_t>(50),
+            .h = static_cast<int32_t>(50),
     };
 
     Scene scene;
 
-    Camera camera(800, 600);
-    Sphere sphere1 {glm::vec3{0, 0, -1.0f}, 0.5f};
-    Sphere sphere2 {glm::vec3{-10, 0, -3.0f}, 15.0f};
+    Camera camera(800.0f / 600.0f, 90.0f);
+    Sphere sphere1{glm::vec3{0, 0, -1.0f}, 0.5f};
+    Sphere sphere2{glm::vec3{1.0f, 0.0f, -1.0f}, 0.5f};
 
     scene.addObject(&sphere1);
     //scene.addObject(&sphere2);

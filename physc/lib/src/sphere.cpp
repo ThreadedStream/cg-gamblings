@@ -34,16 +34,16 @@ bool Sphere::intersects(Ray& r, float& t, const float t_min, const float t_max, 
     }
 
     const float discriminant_sqrt = sqrt(discriminant);
-    const float t1 = (-b + discriminant_sqrt) / 2 * a;
-    const float t2 = (-b - discriminant_sqrt) / 2 * a;
+    const float t1 = (-b + discriminant_sqrt) / 2;
+    const float t2 = (-b - discriminant_sqrt) / 2;
     if (t1 < t2 && t1 >= 0.0f){
         hit_record.t = t1;
-        hit_record.intersection_point = r.at<true>(t1);
-        hit_record.set_face_normal(direction_, glm::normalize((hit_record.intersection_point - center_) / rad_));
+        hit_record.intersection_point = r.at(t1);
+        hit_record.set_face_normal(direction_, (hit_record.intersection_point - center_) / rad_);
     }else if (t2 < t1 && t2 >= 0.0f){
         hit_record.t = t2;
-        hit_record.intersection_point = r.at<true>(t2);
-        hit_record.set_face_normal(direction_, glm::normalize((hit_record.intersection_point - center_) / rad_));
+        hit_record.intersection_point = r.at(t2);
+        hit_record.set_face_normal(direction_, (hit_record.intersection_point - center_) / rad_);
     }
 
     return true;
