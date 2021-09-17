@@ -13,6 +13,7 @@
 #include "../include/plane.h"
 #include "../include/camera.h"
 #include "../include/scene.h"
+#include "../include/material.h"
 
 #include <iostream>
 #include <memory>
@@ -22,6 +23,7 @@ char err[512];
 
 
 #define RECT_SPEED 150
+
 
 void monitorCloseEvent(SDL_Event *event, bool *running);
 
@@ -43,36 +45,58 @@ int main(int argc, const char *argv[]) {
     }
 #endif
 
-    Context context;
-
-    Drawing drawing;
-
-    SDL_Event event;
-
-    bool running = true;
-
-    // https://gafferongames.com/post/fix_your_timestep/
-    float t = 0.0f, dt = 1.0f / 60.0f;
-    int animationFrame = 0, animationStep = 0;
-
-    //auto triangle_data = drawing.randomTriangleData();
-    b2Vec2 box_pos{half_width + 10, half_height};
-
-    SDL_Rect box = {
-            .x = static_cast<int32_t>(box_pos.x),
-            .y = static_cast<int32_t>(box_pos.y),
-            .w = static_cast<int32_t>(50),
-            .h = static_cast<int32_t>(50),
-    };
+//    Context context;
+//
+//    Drawing drawing;
+//
+//    SDL_Event event;
+//
+//    bool running = true;
+//
+//    // https://gafferongames.com/post/fix_your_timestep/
+//    float t = 0.0f, dt = 1.0f / 60.0f;
+//    int animationFrame = 0, animationStep = 0;
+//
+//    //auto triangle_data = drawing.randomTriangleData();
+//    b2Vec2 box_pos{half_width + 10, half_height};
+//
+//    SDL_Rect box = {
+//            .x = static_cast<int32_t>(box_pos.x),
+//            .y = static_cast<int32_t>(box_pos.y),
+//            .w = static_cast<int32_t>(50),
+//            .h = static_cast<int32_t>(50),
+//    };
 
     Scene scene;
 
+    //TODO(threadedstream): causes problem when used along with a second (huge-ass) sphere
+    auto material_ground = std::make_shared<Lambertian>(Color{0.8, 0.8, 0.0});
+    auto material_center = std::make_shared<Lambertian>(Color{0.7, 0.3, 0.3});
+    auto material_left = std::make_shared<Metal>(Color{0.8, 0.8, 0.8});
+    auto material_right = std::make_shared<Metal>(Color{0.8, 0.6, 0.2});
+
+    //TODO(threadedstream): how can i effectively use raw pointers without causing
+    // any harm to an overall program's state? I mean, shared_ptrs are not present
+    // in C api, and yet somehow developers deal with this memory ownership
+    // problem. So, it must be noted that before using any "smarty-pointer" stuff
+    // i should thoroughly investigate the problem and find an appropriate solution.
+    // That way the intuition behind using shared_ptrs is gained. I don't desire to
+    // blindly follow the rules dictated by C++ committee -- that's not right
+
+    //The only thing i grasped during inspecting source code of shared_ptr is that
+    // it applies move semantic upon deleter (function pointer to deletion of an object)
+
     Camera camera(800.0f / 600.0f, 90.0f);
-    Sphere sphere1{glm::vec3{0, 0, -1.0f}, 0.5f};
-    Sphere sphere2{glm::vec3{1.0f, 0.0f, -1.0f}, 0.5f};
+    Sphere sphere1{Point3{0, 0, -1.0f}, 0.5f, material_center};
+    //Sphere sphere2{Point3{0.0f, -100.5f, -1.0f}, 100.0f, material_ground};
+    Sphere sphere3{Point3{-1.0f, 0.0f, -1.0f}, 0.5f, material_left};
+    Sphere sphere4{Point3{1.0f, 0.0f, -1.0f}, 0.5f, material_right};
+
 
     scene.addObject(&sphere1);
     //scene.addObject(&sphere2);
+    scene.addObject(&sphere3);
+    scene.addObject(&sphere4);
 
     // TODO(threadedstream): give it a better name
     camera.castNumerousRaysIntoScene(scene, "/home/glasser/sample.ppm", 800, 600);

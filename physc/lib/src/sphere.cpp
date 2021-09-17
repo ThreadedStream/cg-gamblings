@@ -20,8 +20,6 @@ bool Sphere::intersects(Ray& r, float& t, const float t_min, const float t_max, 
     glm::vec3 c_r =  r.origin() - center_; // CA = A - C
     const auto direction_ = glm::normalize(r.direction());
 
-    // a
-    const float a = glm::dot(direction_, direction_); // (dir).(dir) = |dir|^2
     // b
     const float b = 2 * glm::dot(direction_, c_r); // 2 * dir * CO
     // c
@@ -39,12 +37,12 @@ bool Sphere::intersects(Ray& r, float& t, const float t_min, const float t_max, 
     if (t1 < t2 && t1 >= 0.0f){
         hit_record.t = t1;
         hit_record.intersection_point = r.at(t1);
-        hit_record.set_face_normal(direction_, (hit_record.intersection_point - center_) / rad_);
     }else if (t2 < t1 && t2 >= 0.0f){
         hit_record.t = t2;
         hit_record.intersection_point = r.at(t2);
-        hit_record.set_face_normal(direction_, (hit_record.intersection_point - center_) / rad_);
     }
+    hit_record.set_face_normal(direction_, (hit_record.intersection_point - center_) / rad_);
+    hit_record.material = material_;
 
     return true;
 }

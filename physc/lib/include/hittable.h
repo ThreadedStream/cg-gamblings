@@ -1,11 +1,15 @@
 #pragma once
 
 class Ray;
+class Material;
 
 struct HitRecord{
     glm::vec3 normal;
     glm::vec3 intersection_point;
     float t;
+    std::shared_ptr<Material> material;
+
+
     bool front_face;
 
     inline void set_face_normal(const glm::vec3& ray_direction, const glm::vec3& outward_normal) {

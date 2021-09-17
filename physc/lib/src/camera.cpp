@@ -3,6 +3,7 @@
 
 #define ENABLE_ANTIALIASING
 
+
 void
 Camera::castNumerousRaysIntoScene(Scene &scene, const char *output_file, const int32_t width, const int32_t height) {
     PPManipulator manipulator{output_file, width, height, 255};
@@ -17,6 +18,8 @@ Camera::castNumerousRaysIntoScene(Scene &scene, const char *output_file, const i
     const int64_t samples_per_pixel = 4;
 #endif
 
+    const int64_t depth = 10;
+
     for (int32_t j = height - 1; j >= 0; j--) {
         for (int32_t i = 0; i < width; i++) {
 #ifdef ENABLE_ANTIALIASING
@@ -25,10 +28,10 @@ Camera::castNumerousRaysIntoScene(Scene &scene, const char *output_file, const i
                 u = static_cast<float>(i + random_double()) / static_cast<float>(width - 1);
                 v = static_cast<float>(j + random_double()) / static_cast<float>(height - 1);
                 Ray r = castRay(u, v);
-                color += r.determineColor(r,scene, 50);
+                color += r.determineColor(r,scene, depth);
             }
             color /= samples_per_pixel;
-            manipulator.writeSingle(color);
+            manipulator.writeSingle(color, samples_per_pixel);
             color = {0.0f, 0.0f, 0.0f};
 #else
             u = static_cast<float>(i) / static_cast<float>(width - 1);
@@ -42,6 +45,7 @@ Camera::castNumerousRaysIntoScene(Scene &scene, const char *output_file, const i
 }
 
 void Camera::sampleRayCasting(const char *output_file, const int32_t width, const int32_t height) {
+#if 0
     const auto ray_origin = glm::vec3{0.0f, 0.0f, 0.0f};
     PPManipulator manipulator{output_file, width, height, 260};
     // TODO(threadedstream): provide better error diagnostic?
@@ -51,6 +55,8 @@ void Camera::sampleRayCasting(const char *output_file, const int32_t width, cons
     HitRecord hit_record{};
     float t;
     glm::vec3 color;
+
+    const int64_t samples_per_pixel = 4;
 
     float u{0.0f}, v{0.0f};
     // TODO(threadedstream): consider enabling parallelism by means of OMP extension
@@ -63,9 +69,10 @@ void Camera::sampleRayCasting(const char *output_file, const int32_t width, cons
                     ? r.defaultColor()
                     : glm::vec3{1.0f, 1.0f, 1.0f};
 
-            manipulator.writeSingle(color);
+            manipulator.writeSingle(color, samples_per_pixel);
         }
     }
+#endif
 }
 
 

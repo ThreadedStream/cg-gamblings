@@ -5,6 +5,7 @@
 #include <glm.hpp>
 #include <random>
 #include "memory.h"
+#include <memory>
 
 #if defined __GNUC__
 #define FORCE_INLINE __attribute__((always_inline))
@@ -59,6 +60,28 @@ static const auto random_point_in_unit_sphere = []() -> Point3 {
         if (glm::length(pt) >= 1) continue;
         return pt;
     }
+};
+
+static const auto random_unit_vector = []() -> glm::vec3 {
+    return glm::normalize(random_point_in_unit_sphere());
+};
+
+static const auto random_in_hemisphere = [](const glm::vec3 &normal) -> glm::vec3 {
+    Point3 unit_sphere_pt = random_point_in_unit_sphere();
+    if (glm::dot(unit_sphere_pt, normal) > 0)
+        return unit_sphere_pt;
+
+    return -unit_sphere_pt;
+};
+
+static const auto clamp = [](float value, float min, float max) -> float {
+    return value < min ? min : (value > max) ? max : value;
+};
+
+static const auto vector_near_zero = [](const glm::vec3 &v, float tolerance) -> bool {
+    return (std::fabs(v.x) < tolerance)
+           && (std::fabs(v.y) < tolerance)
+           && (std::fabs(v.z) < tolerance);
 };
 
 #define MIN(x, y) (x) < (y) ? (x) : (y)

@@ -38,13 +38,20 @@ public:
     }
 
     void writeBulk(const glm::vec3 *data) {
-        //TODO(threadedstream): fill it
+        //TODO(threadedstream): fill in later
     }
 
-    void writeSingle(const glm::vec3 &color) {
-        handle_ << static_cast<int32_t>(ppm_.max_color_value * color.r) << ' '
-                << static_cast<int32_t>(ppm_.max_color_value * color.g) << ' '
-                << static_cast<int32_t>(ppm_.max_color_value * color.b)
+    void writeSingle(const glm::vec3 &color, int64_t samples_per_pixel) {
+
+        const float scale = 1.0f / static_cast<float>(samples_per_pixel);
+        const auto r = clamp(std::sqrt(scale * color.r), 0.0f, 0.999f);
+        const auto g = clamp(std::sqrt(scale * color.g), 0.0f, 0.999f);
+        const auto b = clamp(std::sqrt(scale * color.b), 0.0f, 0.999f);
+
+
+        handle_ << static_cast<int32_t>(ppm_.max_color_value * r) << ' '
+                << static_cast<int32_t>(ppm_.max_color_value * g) << ' '
+                << static_cast<int32_t>(ppm_.max_color_value * b)
                 << '\n';
     }
 

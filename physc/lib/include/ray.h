@@ -12,6 +12,8 @@ public:
     explicit Ray(const glm::vec3 &origin, const glm::vec3 &direction) :
             origin_{origin}, direction_{glm::normalize(direction)} {};
 
+    Ray() : origin_(glm::vec3{0.0f, 0.0f, 0.0f}), direction_(glm::vec3{0.0f, 0.0f, 0.0f}) {}
+
     inline glm::vec3 at(float t) noexcept { return origin_ + (direction_ * t); }
 
     [[nodiscard]] inline glm::vec3& origin() noexcept { return origin_; }

@@ -35,6 +35,7 @@ set(PHYSC_HEADER_FILES
         include/plane.h
         include/scene.h
         include/hittable.h
+        include/material.h
         )
 
 
