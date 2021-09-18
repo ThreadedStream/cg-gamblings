@@ -4,7 +4,7 @@ project(physc)
 set(CMAKE_CXX_STANDARD 17)
 
 # dump syntax tree for clang
-set(CLANG_FLAGS "-Weverything -pedantic -g")
+set(CLANG_FLAGS "-Weverything -pedantic ")
 set(GCC_FLAGS "-Wall")
 
 option(USING_LAPTOP "Use laptop configuration" OFF)
@@ -21,6 +21,7 @@ else()
     set(CMAKE_CXX_FLAGS ${GCC_FLAGS})
 endif ()
 
+add_compile_options(-gdwarf-4)
 
 add_subdirectory(lib)
 

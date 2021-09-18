@@ -87,19 +87,29 @@ int main(int argc, const char *argv[]) {
     // it applies move semantic upon deleter (function pointer to deletion of an object)
 
     Camera camera(800.0f / 600.0f, 90.0f);
-    Sphere sphere1{Point3{0, 0, -1.0f}, 0.5f, material_center};
-    //Sphere sphere2{Point3{0.0f, -100.5f, -1.0f}, 100.0f, material_ground};
+    Sphere sphere1{Point3{0, 0, -1.0f}, 0.5f, material_ground};
+    Sphere sphere2{Point3{0.0f, -100.5f, -1.0f}, 100.0f, material_center};
     Sphere sphere3{Point3{-1.0f, 0.0f, -1.0f}, 0.5f, material_left};
     Sphere sphere4{Point3{1.0f, 0.0f, -1.0f}, 0.5f, material_right};
 
 
     scene.addObject(&sphere1);
-    //scene.addObject(&sphere2);
+    scene.addObject(&sphere2);
     scene.addObject(&sphere3);
     scene.addObject(&sphere4);
 
     // TODO(threadedstream): give it a better name
-    camera.castNumerousRaysIntoScene(scene, "/home/glasser/sample.ppm", 800, 600);
+    //camera.castNumerousRaysIntoScene(scene, "/home/threadedstream/sample.ppm", 800, 600);
+
+    glm::mat3x3 a = {{2, 4, 3},
+                     {5, 6, 1},
+                     {4, 2, 3}};
+
+    glm::mat3x3 a_inv = {{-1/13, 3/13, 0.0f},
+                         {37/54, 1/9, -13/54},
+                         {-1/27, -2/9, 4/27}};
+
+    glm::mat3x3 res = a * a_inv;
 
 #if 0
     const auto mat = glm::mat3x3{
