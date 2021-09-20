@@ -1,6 +1,6 @@
 #pragma once
 
-#include "defs.hpp"
+#include "../../shared/defs.hpp"
 
 class MathUtils{
 public:

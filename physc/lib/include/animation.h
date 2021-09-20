@@ -1,5 +1,5 @@
 #include <SDL_render.h>
-#include "defs.hpp"
+#include "../../shared/defs.hpp"
 
 #pragma once
 

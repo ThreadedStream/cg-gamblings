@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SDL_image.h>
-#include "../include/defs.hpp"
+#include "../../shared/defs.hpp"
 
 
 // compute the size of it

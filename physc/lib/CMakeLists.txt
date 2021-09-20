@@ -22,7 +22,7 @@ set(PHYSC_SRC_FILES
 set(PHYSC_HEADER_FILES
         include/animation.h
         include/asset_loader.h
-        include/defs.hpp
+        ../shared/defs.hpp
         include/draw.h
         include/entity.h
         include/map.h

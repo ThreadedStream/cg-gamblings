@@ -23,5 +23,7 @@ endif ()
 
 add_compile_options(-gdwarf-4)
 
+
+add_subdirectory(realtime)
 add_subdirectory(lib)
 

@@ -1,10 +1,8 @@
 #pragma once
 
-#include <box2d/box2d.h>
 #include <spdlog/spdlog.h>
 #include <glm.hpp>
 #include <random>
-#include "memory.h"
 #include <memory>
 
 #if defined __GNUC__

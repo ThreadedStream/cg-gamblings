@@ -1,6 +1,6 @@
 #pragma once
 
-#include "defs.hpp"
+#include "../../shared/defs.hpp"
 #include "hittable.h"
 #include "ray.h"
 
