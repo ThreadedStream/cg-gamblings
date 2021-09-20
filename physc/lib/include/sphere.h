@@ -7,11 +7,11 @@
 
 class Sphere : public Hittable {
 public:
-    explicit Sphere(int32_t x, int32_t y, int32_t z, float rad,const  std::shared_ptr<Material>& mat) :
-            center_{x, y, z}, material_{mat}, rad_{rad} {};
+    explicit Sphere(int32_t x, int32_t y, int32_t z, float rad,std::shared_ptr<Material>&& mat) :
+            center_{x, y, z}, material_{std::move(mat)}, rad_{rad} {};
 
-    explicit Sphere(const glm::vec3 &center, float rad, const std::shared_ptr<Material> &mat) :
-            center_{center}, material_{mat}, rad_{rad} {};
+    explicit Sphere(const glm::vec3 &center, float rad, std::shared_ptr<Material> &&mat) :
+            center_{center}, material_{std::move(mat)}, rad_{rad} {};
 
     bool intersects(Ray &r, float &t, float t_min, float t_max, HitRecord &hit_record);
 

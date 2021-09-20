@@ -14,8 +14,8 @@
 #include "../include/camera.h"
 #include "../include/scene.h"
 #include "../include/material.h"
+#include "../include/math_utils.h"
 
-#include <iostream>
 #include <memory>
 
 
@@ -98,18 +98,7 @@ int main(int argc, const char *argv[]) {
     scene.addObject(&sphere3);
     scene.addObject(&sphere4);
 
-    // TODO(threadedstream): give it a better name
-    //camera.castNumerousRaysIntoScene(scene, "/home/threadedstream/sample.ppm", 800, 600);
-
-    glm::mat3x3 a = {{2, 4, 3},
-                     {5, 6, 1},
-                     {4, 2, 3}};
-
-    glm::mat3x3 a_inv = {{-1/13, 3/13, 0.0f},
-                         {37/54, 1/9, -13/54},
-                         {-1/27, -2/9, 4/27}};
-
-    glm::mat3x3 res = a * a_inv;
+    camera.castNumerousRaysIntoScene(scene, "/home/threadedstream/sample.ppm", 800, 600);
 
 #if 0
     const auto mat = glm::mat3x3{
