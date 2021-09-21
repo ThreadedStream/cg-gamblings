@@ -15,6 +15,8 @@ if (USING_LAPTOP)
 else()
     set(SDL_LIB /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so)
     set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
+    set(GLU_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGLU.so)
+    set(GL_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGL.so)
 endif()
 
 set(GLM_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/glm/build/glm/libglm_shared.so)

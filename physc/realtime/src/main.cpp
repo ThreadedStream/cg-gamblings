@@ -7,8 +7,7 @@
 #include <ext/matrix_clip_space.hpp>
 #include <gtc/type_ptr.hpp>
 
-constexpr glm::vec3 UP = glm::vec3{0.0f, 1.0f, 0.0f};
-
+constexpr glm::vec3 up = glm::vec3{0.0f, 1.0f, 0.0f};
 
 constexpr float angle = glm::pi<float>() * .5;
 
@@ -58,6 +57,27 @@ constexpr float cube_vertices[] = {
         1.0f,-1.0f, 1.0f
 };
 
+class GlobalFrameManager;
+static GlobalFrameManager * instance_;
+
+class GlobalFrameManager {
+public:
+    static GlobalFrameManager* getInstance(){
+        if (!instance_) {
+            instance_ = new GlobalFrameManager();
+        }
+        return instance_;
+    }
+
+
+    [[nodiscard]] inline const float dt() const noexcept { return dt_; }
+
+private:
+    GlobalFrameManager() : dt_{1 / 60.0f} {};
+
+    float dt_;
+};
+
 #define CHECK_FOR_SHADER_ERRORS(shader, status_type) \
     glGetShaderiv(shader, status_type, &success); \
     if (!success) { \
@@ -70,7 +90,7 @@ constexpr float cube_vertices[] = {
     glShaderSource(shader, 1, &(shader_source), nullptr); \
     glCompileShader(shader); \
 
-const char *vertex_shader_source = R"shader(
+const char *triangle_vertex_shader_source = R"shader(
     #version 330 core
     layout (location = 0) in vec3 triangle_pos;
     void main() {
@@ -78,7 +98,7 @@ const char *vertex_shader_source = R"shader(
     }
 )shader";
 
-const char *fragment_shader_source = R"shader(
+const char *triangle_fragment_shader_source = R"shader(
     #version 330 core
     out vec4 frag_color;
 
@@ -106,13 +126,17 @@ const char *cube_fragment_shader_source = R"shader(
     }
 )shader";
 
+static auto camera_pos = glm::vec3{0.0f, 0.0f, 3.0f};
+static auto camera_front = glm::vec3{0.0f, 0.0f, -1.0f};
+static auto camera_up = glm::vec3{0.0f, 1.0f, 0.0f};
 
-glm::mat4 mvpMatrix(const glm::vec3& eye, const glm::mat4& projection, const glm::mat4& model) {
-    const glm::mat4 view = glm::lookAt(eye, glm::vec3{0.0f, 0.0f, 0.0f}, UP);
+
+glm::mat4 mvpMatrix(const glm::mat4& projection, const glm::mat4& model) {
+    const glm::mat4 view = glm::lookAt(camera_pos, glm::vec3{0.0f, 0.0f, 0.0f}, up);
     return projection * view * model;
 }
 
-void drawTriangle() {
+void drawTriangle(const glm::mat4& mvp) {
     uint32_t vbo{0}, vao{0}, vertex_shader{0}, fragment_shader{0}, shader_program{0};
     int32_t success{0};
     char error_buffer[512];
@@ -125,11 +149,11 @@ void drawTriangle() {
     glEnableVertexAttribArray(0);
 
     // creating a vertex shader
-    CREATE_SHADER(vertex_shader, vertex_shader_source, GL_VERTEX_SHADER)
+    CREATE_SHADER(vertex_shader, cube_vertex_shader_source, GL_VERTEX_SHADER)
     CHECK_FOR_SHADER_ERRORS(vertex_shader, GL_COMPILE_STATUS)
 
     // creating a fragment shader
-    CREATE_SHADER(fragment_shader, fragment_shader_source, GL_FRAGMENT_SHADER)
+    CREATE_SHADER(fragment_shader, cube_fragment_shader_source, GL_FRAGMENT_SHADER)
     CHECK_FOR_SHADER_ERRORS(fragment_shader, GL_COMPILE_STATUS)
 
     shader_program = glCreateProgram();
@@ -143,11 +167,15 @@ void drawTriangle() {
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
+    auto mvp_mat_location = glGetUniformLocation(shader_program, "mvp");
+
     glUseProgram(shader_program);
+    glUniformMatrix4fv(mvp_mat_location, 1, GL_FALSE, glm::value_ptr(mvp));
+
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void drawCube(const glm::mat4& projection, const glm::mat4& model, const glm::vec3& eye) {
+void drawCube(const glm::mat4& mvp) {
     uint32_t vbo{0}, vao{0}, vertex_shader{0}, fragment_shader{0}, shader_program{0};
     int32_t success{0};
     char error_buffer[512];
@@ -178,8 +206,6 @@ void drawCube(const glm::mat4& projection, const glm::mat4& model, const glm::ve
 
     auto mvp_mat_location = glGetUniformLocation(shader_program, "mvp");
 
-    const glm::mat4 mvp = mvpMatrix(eye, projection, model);
-
     glUseProgram(shader_program);
     glUniformMatrix4fv(mvp_mat_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
@@ -187,27 +213,30 @@ void drawCube(const glm::mat4& projection, const glm::mat4& model, const glm::ve
 //                                                  glm::vec3{0.0f, 0.0f, 0.0f},
 //                                                  glm::vec3{0.0f, 1.0f, 0.0f});
 
-
-
     CHECK_FOR_SHADER_ERRORS(shader_program, GL_LINK_STATUS)
 
     glDrawArrays(GL_TRIANGLES, 0, 3 * 12);
 }
 
-void handleInput(glm::vec3& eye){
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-        switch(event.type) {
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym ) {
-                    case SDLK_LEFT:
-                        eye.x -= 2.0f;
-                    case SDLK_UP:
-                        eye.z += 2.0f;
-                }
-        }
+void onKeyPressed(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods){
+    const float camera_speed = 10.0f;
+    switch(key) {
+        case GLFW_KEY_W:
+            camera_pos += camera_speed * camera_front * GlobalFrameManager::getInstance()->dt();
+            break;
+        case GLFW_KEY_S:
+            camera_pos -= camera_speed * camera_front * GlobalFrameManager::getInstance()->dt();
+            break;
+        case GLFW_KEY_D:
+            camera_pos += glm::normalize(glm::cross(camera_front, camera_up)) * camera_speed * GlobalFrameManager::getInstance()->dt();
+            break;
+        case GLFW_KEY_A:
+            camera_pos -= glm::normalize(glm::cross(camera_front, camera_up)) * camera_speed * GlobalFrameManager::getInstance()->dt();
+            break;
+        default:
+            break;
     }
+    spdlog::info("camera_pos: ({}, {}, {})", camera_pos.x, camera_pos.y, camera_pos.z);
 }
 
 
@@ -225,8 +254,6 @@ int main(int argc, const char *argv[]) {
 
     const glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3{10.0f});
 
-    glm::vec3 eye{0.0f, 0.0f, -1.0f};
-
     if (!window) {
         glfwTerminate();
         return -1;
@@ -234,12 +261,17 @@ int main(int argc, const char *argv[]) {
 
     spdlog::info("window has been initialized");
 
+    const float radius = 10.0f;
     glfwMakeContextCurrent(window);
+
+    glfwSetKeyCallback(window, onKeyPressed);
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        drawCube(projection, model, eye);
+        const auto view = glm::lookAt(camera_pos, camera_pos + camera_front, up);
+        const auto mvp = projection * view * model;
+        drawCube(mvp);
+        drawTriangle(mvp);
         glfwSwapBuffers(window);
-        //       handleInput(eye);
         glfwPollEvents();
     }
 

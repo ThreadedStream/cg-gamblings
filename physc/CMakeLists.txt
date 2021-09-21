@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # dump syntax tree for clang
 set(CLANG_FLAGS "-Weverything -pedantic ")
-set(GCC_FLAGS "-Wall")
+set(GCC_FLAGS "-Wall -O1")
 
 option(USING_LAPTOP "Use laptop configuration" OFF)
 
