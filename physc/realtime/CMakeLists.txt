@@ -2,11 +2,12 @@ set(GLM_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glm/glm)
 set(SPDLOG_INCLUDE ${CMAKE_SOURCE_DIR}/extern/spdlog/include)
 set(GLFW_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glfw/include)
 set(SDL_INCLUDE /usr/local/include/SDL2)
+set(STB_INCLUDE ${CMAKE_SOURCE_DIR}/extern/stb/)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 
-# i don't like this mess
+# get rid of hardcoded paths
 if (USING_LAPTOP)
     set(SDL_LIB /usr/local/lib/libSDL2.so)
     set(SDL_FONT_LIB /usr/local/lib/libSDL2_ttf.so)
@@ -24,10 +25,12 @@ set(SPDLOG_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/spdlog/build/libspdlog.so)
 set(GLFW_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/glfw/build/src/libglfw.so)
 
 set(REALTIME_SRC_FILES
-        src/main.cpp)
+        src/main.cpp
+        ${CMAKE_SOURCE_DIR}/extern/stb/stb_image.cpp)
 
 set(REALTIME_HEADER_FILES
-        )
+        include/shader.h
+)
 
 add_executable(realtime ${REALTIME_SRC_FILES} ${REALTIME_HEADER_FILES})
 target_include_directories(realtime
@@ -36,6 +39,7 @@ target_include_directories(realtime
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         ${GLM_INCLUDE}
         ${SDL_INCLUDE}
+        ${STB_INCLUDE}
         ${GLFW_INCLUDE}
         PRIVATE
         ${SPDLOG_INCLUDE}
