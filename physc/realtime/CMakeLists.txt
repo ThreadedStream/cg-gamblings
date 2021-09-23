@@ -4,6 +4,7 @@ set(SPDLOG_INCLUDE ${CMAKE_SOURCE_DIR}/extern/spdlog/include)
 set(GLFW_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glfw/include)
 set(SDL_INCLUDE /usr/local/include/SDL2)
 set(STB_INCLUDE ${CMAKE_SOURCE_DIR}/extern/stb/)
+set(GLAD_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glad)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -12,35 +13,34 @@ set(USR_LOCAL_LIB /usr/local/lib/)
 set(USR_LIB /usr/lib/)
 set(USR_LIB_GNU /usr/lib/x86_64-linux-gnu/)
 
+find_library(GLFW_SHARED_LIB NAMES libglfw.so HINTS ${CMAKE_SOURCE_DIR}/extern/glfw/build/src)
+find_library(FREETYPE_SHARED_LIB NAMES libfreetype.so.6 HINTS ${USR_LIB_GNU})
 
-# get rid of hardcoded paths
-#if (USING_LAPTOP)
-#    set(SDL_LIB /usr/local/lib/libSDL2.so)
-#    set(SDL_FONT_LIB /usr/local/lib/libSDL2_ttf.so)
-#    set(GLU_SHARED_LIB /usr/lib/libGLU.so)
-#    set(GL_SHARED_LIB /usr/lib/libGL.so)
-#else()
-#    set(SDL_LIB /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so)
-#    set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
-#    set(GLU_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGLU.so)
-#    set(GL_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGL.so)
-#endif()
-find_library(SDL_LIB NAMES libSDL2 HINTS ${USR_LOCAL_LIB} ${USR_LIB_GNU})
-find_library(GLEW_LIB NAMES libGLEW HINTS ${USR_LIB} ${USR_LIB_GNU})
-find_library(GLU_SHARED_LIB NAMES libGLU HINTS ${USR_LIB} ${USR_LIB_GNU} )
-find_library(GL_SHARED_LIB ${USR_LIB} ${USR_LIB_GNU})
+set(TARGET_LINK_LIBRARIES ${GLFW_SHARED_LIB} X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread ${FREETYPE_SHARED_LIB})
 
-set(GLM_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/glm/build/glm/libglm_shared.so)
-set(SPDLOG_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/spdlog/build/libspdlog.so)
-set(GLFW_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/glfw/build/src/libglfw.so)
+#find_library(SDL_LIB NAMES libSDL2.so HINTS ${USR_LOCAL_LIB} ${USR_LIB_GNU})
+#find_library(GLU_SHARED_LIB NAMES libGLU.so HINTS ${USR_LIB} ${USR_LIB_GNU})
+#find_library(GL_SHARED_LIB NAMES libGL.so HINTS ${USR_LIB} ${USR_LIB_GNU})
+#find_library(GLM_SHARED_LIB NAMES libglm_shared.so HINTS ${CMAKE_SOURCE_DIR}/extern/glm/build/glm)
+#find_library(SPDLOG_SHARED_LIB NAMES libspdlog.so HINTS ${CMAKE_SOURCE_DIR}/extern/spdlog/build)
+
+add_library(STB_IMAGE_LIB ${CMAKE_SOURCE_DIR}/extern/stb/stb_image.cpp)
+add_library(GLAD_LIB ${CMAKE_SOURCE_DIR}/extern/glad/glad.c)
+
+set(TARGET_LINK_LIBRARIES  GLAD_LIB ${TARGET_LINK_LIBRARIES} STB_IMAGE_LIB)
+
 
 set(REALTIME_SRC_FILES
         src/main.cpp
-        ${CMAKE_SOURCE_DIR}/extern/stb/stb_image.cpp)
+        src/renderer.cpp
+        )
 
 set(REALTIME_HEADER_FILES
         include/shader.h
-)
+        include/vertices.h
+        include/shader_sources.h
+        include/renderer.h
+        )
 
 add_executable(realtime ${REALTIME_SRC_FILES} ${REALTIME_HEADER_FILES})
 target_include_directories(realtime
@@ -51,6 +51,7 @@ target_include_directories(realtime
         ${SDL_INCLUDE}
         ${STB_INCLUDE}
         ${GLFW_INCLUDE}
+        ${GLAD_INCLUDE}
         PRIVATE
         ${SPDLOG_INCLUDE}
         ${CMAKE_SOURCE_DIR}
@@ -60,11 +61,9 @@ target_include_directories(realtime
 
 set(CMAKE_CXX_STANDARD 17)
 
-target_link_libraries(realtime ${SDL_LIBRARIES} ${SDL_LIB}
-                                ${SDL_FONT_LIB} ${SDL2_IMAGE_LIBRARIES}
-                                ${GLM_SHARED_LIB} ${GLFW_SHARED_LIB}
-                                ${GLU_SHARED_LIB} ${GL_SHARED_LIB}
-                                ${GLEW_LIB})
+set(LIB)
+
+target_link_libraries(realtime ${TARGET_LINK_LIBRARIES})
 
 set_target_properties(realtime PROPERTIES
         CXX_STANDARD 17

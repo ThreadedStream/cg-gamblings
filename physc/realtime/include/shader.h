@@ -1,128 +1,73 @@
+#include "shader_sources.h"
 
 
-namespace shaders {
-    const char *triangle_vertex_shader_source = R"shader(
-    #version 330 core
-    layout (location = 0) in vec3 triangle_pos;
-    void main() {
-        gl_Position = vec4(triangle_pos.x, triangle_pos.y, triangle_pos.z, 1.0f);
+#define CHECK_FOR_SHADER_ERRORS(shader, status_type) \
+    glGetShaderiv(shader, status_type, &success); \
+    if (!success) { \
+        glGetShaderInfoLog(shader, sizeof(error_buffer), nullptr, error_buffer); \
+        spdlog::error(error_buffer); \
     }
-    )shader";
 
-    const char *triangle_fragment_shader_source = R"shader(
-    #version 330 core
-    out vec4 frag_color;
+#define CREATE_SHADER(shader, shader_source, shader_type) \
+    shader = glCreateShader(shader_type); \
+    glShaderSource(shader, 1, &(shader_source), nullptr); \
+    glCompileShader(shader); \
 
-    void main() {
-        frag_color = vec4(1.0f, 1.0f, 0.0f, 1.0f);
+
+// TODO(threadedstream): hinder implementation, make structure look more "layerized"
+// By "layerization" i mean the structure when one has the files containing the actual implementation
+// details of some functionality, but also another header file serving as an intermediate level
+// between functionality and the rest of the world.
+class Shader final{
+public:
+    explicit Shader(const uint32_t vertex_shader_type, const uint32_t fragment_shader_type):
+            shader_program_id_{0} {
+        setup_();
     }
-    )shader";
 
-    const char *cube_vertex_shader_source = R"shader(
-    #version 330 core
-    layout (location = 0) in vec3 vertex_pos_model;
-    uniform mat4x4 mvp;
-
-    void main() {
-        gl_Position = mvp * vec4(vertex_pos_model, 1.0f);
+    inline void use() const noexcept {
+        glUseProgram(shader_program_id_);
     }
-    )shader";
 
-    const char *cube_fragment_shader_source = R"shader(
-    #version 330 core
-    out vec4 frag_color;
-
-    void main() {
-        frag_color = vec4(1.0f, 0.0f, 1.0f, 1.0f);
+    // NOTE(threadedstream): all transfers of data from cpu to gpu MUST be
+    // carried out after calling use() function
+    inline void passUniformMat4(const glm::mat4& mat, const char* const identifier) const noexcept{
+        // TODO(threadedstream): cache uniform locations
+        auto mat_location = glGetUniformLocation(shader_program_id_, identifier);
+        glUniformMatrix4fv(mat_location, 1, GL_FALSE, glm::value_ptr(mat));
     }
-    )shader";
 
-    const char *textured_vertex_shader = R"shader(
-    #version 330 core
-    layout (location = 0) in vec3 vertex_pos;
-    layout (location = 1) in vec3 vertex_color;
-    layout (location = 2) in vec2 tex_coords;
-
-    out vec3 color;
-    out vec2 texture_coords;
-
-    uniform mat4 mvp;
-
-    void main() {
-        gl_Position = mvp * vec4(vertex_pos, 1.0);
-        color = vertex_color;
-        texture_coords = tex_coords;
+    inline void passUniformInt(const int32_t value, const char* const identifier) const noexcept{
+        auto int_location = glGetUniformLocation(shader_program_id_, identifier);
+        glUniform1i(int_location, value);
     }
-    )shader";
 
-    const char *textured_fragment_shader = R"shader(
-    #version 330 core
-    // prefix "out" is relevant only in the context of vertex shader
-    in vec3 color;
-    in vec2 texture_coords;
+private:
+    void setup_() {
+        uint32_t vertex_shader{0}, fragment_shader{0};
+        int32_t success{0}; char error_buffer[512];
 
-    out vec4 frag_color;
+        // creating a vertex shader
+        CREATE_SHADER(vertex_shader, textured_vertex_shader, GL_VERTEX_SHADER)
+        CHECK_FOR_SHADER_ERRORS(vertex_shader, GL_COMPILE_STATUS)
 
-    uniform sampler2D texture_sampler;
+        // creating a fragment shader
+        CREATE_SHADER(fragment_shader, textured_fragment_shader, GL_FRAGMENT_SHADER)
+        CHECK_FOR_SHADER_ERRORS(fragment_shader, GL_COMPILE_STATUS)
 
-    void main(){
-        // "texturizing" vertices
-        frag_color = texture(texture_sampler, texture_coords);
+        shader_program_id_ = glCreateProgram();
+
+        glAttachShader(shader_program_id_, vertex_shader);
+        glAttachShader(shader_program_id_, fragment_shader);
+        glLinkProgram(shader_program_id_);
+
+        CHECK_FOR_SHADER_ERRORS(shader_program_id_, GL_LINK_STATUS)
+
+        glDeleteShader(vertex_shader);
+        glDeleteShader(fragment_shader);
     }
-    )shader";
 
-    // TODO(threadedstream): build another residence for vertices
-    constexpr float triangle_vertices[] = {
-            0.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f
-    };
+private:
+    uint32_t shader_program_id_;
 
-    constexpr float cube_vertices[] = {
-            -1.0f, -1.0f, -1.0f, // triangle 1 : begin
-            -1.0f, -1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f, // triangle 1 : end
-            1.0f, 1.0f, -1.0f, // triangle 2 : begin
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f, // triangle 2 : end
-            1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, -1.0f,
-            1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f
-    };
-
-    constexpr float vertices[] = {
-            // positions          // colors                 // texture coords
-            0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, /*red*/     1.0f, 1.0f,   // top right
-            0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, /*green*/  1.0f, 0.0f,   // bottom right
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,           0.0f, 0.0f,   // bottom left
-            -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f,            0.0f, 1.0f    // top left
-    };
-
-}
+};
