@@ -1,3 +1,4 @@
+# replace set's with find_path's
 set(GLM_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glm/glm)
 set(SPDLOG_INCLUDE ${CMAKE_SOURCE_DIR}/extern/spdlog/include)
 set(GLFW_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glfw/include)
@@ -7,18 +8,27 @@ set(STB_INCLUDE ${CMAKE_SOURCE_DIR}/extern/stb/)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 
+set(USR_LOCAL_LIB /usr/local/lib/)
+set(USR_LIB /usr/lib/)
+set(USR_LIB_GNU /usr/lib/x86_64-linux-gnu/)
+
+
 # get rid of hardcoded paths
-if (USING_LAPTOP)
-    set(SDL_LIB /usr/local/lib/libSDL2.so)
-    set(SDL_FONT_LIB /usr/local/lib/libSDL2_ttf.so)
-    set(GLU_SHARED_LIB /usr/lib/libGLU.so)
-    set(GL_SHARED_LIB /usr/lib/libGL.so)
-else()
-    set(SDL_LIB /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so)
-    set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
-    set(GLU_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGLU.so)
-    set(GL_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGL.so)
-endif()
+#if (USING_LAPTOP)
+#    set(SDL_LIB /usr/local/lib/libSDL2.so)
+#    set(SDL_FONT_LIB /usr/local/lib/libSDL2_ttf.so)
+#    set(GLU_SHARED_LIB /usr/lib/libGLU.so)
+#    set(GL_SHARED_LIB /usr/lib/libGL.so)
+#else()
+#    set(SDL_LIB /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so)
+#    set(SDL_FONT_LIB /usr/lib/x86_64-linux-gnu/libSDL2_ttf.so)
+#    set(GLU_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGLU.so)
+#    set(GL_SHARED_LIB /usr/lib/x86_64-linux-gnu/libGL.so)
+#endif()
+find_library(SDL_LIB NAMES libSDL2 HINTS ${USR_LOCAL_LIB} ${USR_LIB_GNU})
+find_library(GLEW_LIB NAMES libGLEW HINTS ${USR_LIB} ${USR_LIB_GNU})
+find_library(GLU_SHARED_LIB NAMES libGLU HINTS ${USR_LIB} ${USR_LIB_GNU} )
+find_library(GL_SHARED_LIB ${USR_LIB} ${USR_LIB_GNU})
 
 set(GLM_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/glm/build/glm/libglm_shared.so)
 set(SPDLOG_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/spdlog/build/libspdlog.so)
@@ -53,7 +63,8 @@ set(CMAKE_CXX_STANDARD 17)
 target_link_libraries(realtime ${SDL_LIBRARIES} ${SDL_LIB}
                                 ${SDL_FONT_LIB} ${SDL2_IMAGE_LIBRARIES}
                                 ${GLM_SHARED_LIB} ${GLFW_SHARED_LIB}
-                                ${GLU_SHARED_LIB} ${GL_SHARED_LIB})
+                                ${GLU_SHARED_LIB} ${GL_SHARED_LIB}
+                                ${GLEW_LIB})
 
 set_target_properties(realtime PROPERTIES
         CXX_STANDARD 17

@@ -8,6 +8,7 @@
 #include <gtc/type_ptr.hpp>
 #include <include/shader.h>
 #include <stb_image.h>
+#include <GL/glew.h>
 
 
 using namespace shaders;
@@ -194,7 +195,7 @@ void drawTexturedTriangle(const glm::mat4& mvp) {
     glUseProgram(shader_program);
     glUniformMatrix4fv(mvp_mat_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
-    glBindVertexArray()
+    glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
