@@ -67,6 +67,7 @@ void drawTriangle(const glm::mat4& mvp) {
     char error_buffer[512];
     glGenBuffers(1, &vbo);
 
+
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
 
@@ -134,17 +135,14 @@ void drawCube(const glm::mat4& mvp) {
     glUseProgram(shader_program);
     glUniformMatrix4fv(mvp_mat_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
-//    const glm::mat4x4 camera_matrix = glm::lookAt(glm::vec3{0.0f, 0.0f, -2.0f},
-//                                                  glm::vec3{0.0f, 0.0f, 0.0f},
-//                                                  glm::vec3{0.0f, 1.0f, 0.0f});
-
     CHECK_FOR_SHADER_ERRORS(shader_program, GL_LINK_STATUS)
 
-    glDrawArrays(GL_TRIANGLES, 0, 3 * 12);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
-void drawTexturedTriangle() {
+void drawTexturedTriangle(const glm::mat4& mvp) {
     uint32_t vbo{0}, vao{0}, vertex_shader{0}, fragment_shader{0}, shader_program{0};
+    uint32_t major, minor;
     int32_t success{0};
     char error_buffer[512];
     glGenBuffers(1, &vbo);
@@ -156,16 +154,28 @@ void drawTexturedTriangle() {
     // i.e 3 position components, 3 color components, 2 texture components
     // all of a float type, hence multiplied by sizeof(float).
     int32_t stride = 8 * sizeof(float);
-    // NOTE(threadedstream): nullptr refers to 0
+
+    // NOTE(threadedstream): binding vertex position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, nullptr);
     glEnableVertexAttribArray(0);
 
+    // NOTE(threadedstream): binding vertex color attribute
+    auto vertex_color_offset = (void*) (3 * sizeof(float));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, vertex_color_offset);
+    glEnableVertexAttribArray(1);
+
+    // NOTE(threadedstream): binding texture coordinates attribute
+    auto tex_coords_offset = (void*) (6 * sizeof(float));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, tex_coords_offset);
+    glEnableVertexAttribArray(2);
+
+
     // creating a vertex shader
-    CREATE_SHADER(vertex_shader, cube_vertex_shader_source, GL_VERTEX_SHADER)
+    CREATE_SHADER(vertex_shader, textured_vertex_shader, GL_VERTEX_SHADER)
     CHECK_FOR_SHADER_ERRORS(vertex_shader, GL_COMPILE_STATUS)
 
     // creating a fragment shader
-    CREATE_SHADER(fragment_shader, cube_fragment_shader_source, GL_FRAGMENT_SHADER)
+    CREATE_SHADER(fragment_shader, textured_fragment_shader, GL_FRAGMENT_SHADER)
     CHECK_FOR_SHADER_ERRORS(fragment_shader, GL_COMPILE_STATUS)
 
     shader_program = glCreateProgram();
@@ -184,7 +194,8 @@ void drawTexturedTriangle() {
     glUseProgram(shader_program);
     glUniformMatrix4fv(mvp_mat_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindVertexArray()
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 void onKeyPressed(GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods){
@@ -218,6 +229,10 @@ int main(int argc, const char *argv[]) {
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "i don't know math", nullptr, nullptr);
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     const glm::mat4 projection = glm::perspective(angle, static_cast<float>(WIDTH) / static_cast<float>(HEIGHT),
                                                   0.1f, 10000.0f);
 
@@ -232,7 +247,6 @@ int main(int argc, const char *argv[]) {
 
     uint32_t texture;
     glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
     int32_t width, height, channels_num;
     uint8_t * data = stbi_load("../../assets/wall.jpg", &width, &height, &channels_num, 0);
     if (data) {
@@ -248,12 +262,14 @@ int main(int argc, const char *argv[]) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
+    glBindTexture(GL_TEXTURE_2D, texture);
+
     glfwSetKeyCallback(window, onKeyPressed);
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         const auto view = glm::lookAt(camera_pos, camera_pos + camera_front, up);
         const auto mvp = projection * view * model;
-        drawCube(mvp);
+        drawTexturedTriangle(mvp);
         //drawTriangle(mvp);
         glfwSwapBuffers(window);
         glfwPollEvents();
