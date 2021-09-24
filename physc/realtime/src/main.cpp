@@ -1,17 +1,15 @@
 #include <shared/defs.hpp>
 
+#include <include/renderer.h>
 #include <ext/matrix_transform.hpp>
 #include <ext/matrix_clip_space.hpp>
 #include <gtc/type_ptr.hpp>
-#include <include/shader.h>
 #include <stb_image.h>
 #include <include/vertices.h>
-
 
 constexpr glm::vec3 up = glm::vec3{0.0f, 1.0f, 0.0f};
 
 constexpr float angle = glm::pi<float>() * .5;
-
 
 class GlobalFrameManager;
 
@@ -168,110 +166,12 @@ void onKeyPressed(GLFWwindow *window, int32_t key, int32_t scancode, int32_t act
 
 
 int main(int argc, const char *argv[]) {
-    uint32_t vbo{0}, ebo{0}, vao{0};
+    Renderer renderer(WIDTH, HEIGHT, "I don't know math");
 
-    GLFWwindow *window;
-    if (!glfwInit())
-        return -1;
-
-    spdlog::info("init has been successful");
-
-    window = glfwCreateWindow(WIDTH, HEIGHT, "i don't know math", nullptr, nullptr);
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    const glm::mat4 projection = glm::perspective(angle, static_cast<float>(WIDTH) / static_cast<float>(HEIGHT),
-                                                  0.1f, 10000.0f);
-
-    const glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3{10.0f});
-
-    if (!window) {
-        glfwTerminate();
+    if (!renderer) {
         return -1;
     }
 
-
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        spdlog::error("failed to initialize glad");
-        glfwTerminate();
-        return -1;
-    }
-
-    spdlog::info("window has been initialized");
-
-    // NOTE(threadedstream): beget vertex array object
-
-
-    // NOTE(threadedstream): 8 refers to a number of parameters
-    // i.e 3 position components, 3 color components, 2 texture components
-    // all of a float type, hence multiplied by sizeof(float).
-    const int32_t stride = 8 * sizeof(float);
-
-    // NOTE(threadedstream): binding vertex position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, nullptr);
-    glEnableVertexAttribArray(0);
-
-    // NOTE(threadedstream): binding vertex color attribute
-    const auto vertex_color_offset = (void *) (3 * sizeof(float));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, vertex_color_offset);
-    glEnableVertexAttribArray(1);
-
-    // NOTE(threadedstream): binding texture coordinates attribute
-    const auto tex_coords_offset = (void *) (6 * sizeof(float));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, tex_coords_offset);
-    glEnableVertexAttribArray(2);
-
-    Shader shader(TEXTURED_VERTEX_SHADER, TEXTURED_FRAGMENT_SHADER);
-
-    // NOTE(threadedstream): setting up the first texture
-    uint32_t wall_texture;
-    glGenTextures(1, &wall_texture);
-    glBindTexture(GL_TEXTURE_2D, wall_texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-    int32_t width, height, channels_num;
-    uint8_t *data = stbi_load("../../assets/wall.jpg", &width, &height, &channels_num, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        spdlog::error("failed to load a wall texture");
-    }
-    stbi_image_free(data);
-
-    // NOTE(threadedstream): setting up the second texture
-    uint32_t face_texture;
-    glGenTextures(1, &face_texture);
-    glBindTexture(GL_TEXTURE_2D, face_texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-    data = stbi_load("../../assets/awesomeface.png", &width, &height, &channels_num, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }else {
-        spdlog::error("failed to load a face texture");
-    }
-
-    stbi_image_free(data);
-
-    shader.use();
-    shader.passUniformInt(0, "wall_texture_sampler");
-    shader.passUniformInt(1, "face_texture_sampler");
 
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2, 0.4, 0.2, 0.5);

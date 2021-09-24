@@ -1,6 +1,5 @@
 #include "shader_sources.h"
 
-
 #define CHECK_FOR_SHADER_ERRORS(shader, status_type) \
     glGetShaderiv(shader, status_type, &success); \
     if (!success) { \
@@ -18,6 +17,8 @@
 // By "layerization" i mean the structure when one has the files containing the actual implementation
 // details of some functionality, but also another header file serving as an intermediate level
 // between functionality and the rest of the world.
+
+// TODO(threadedstream): make Shader a singleton
 class Shader final{
 public:
     explicit Shader(const uint32_t vertex_shader_type, const uint32_t fragment_shader_type):
