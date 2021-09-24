@@ -33,6 +33,7 @@ set(TARGET_LINK_LIBRARIES  GLAD_LIB ${TARGET_LINK_LIBRARIES} STB_IMAGE_LIB)
 set(REALTIME_SRC_FILES
         src/main.cpp
         src/renderer.cpp
+        src/shader.cpp
         )
 
 set(REALTIME_HEADER_FILES

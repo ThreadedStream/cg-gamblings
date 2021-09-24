@@ -1,67 +1,70 @@
 #include <include/renderer.h>
 #include <spdlog/spdlog.h>
 #include <glad.h>
-#include <include/shader.h>
-#include <GLFW/glfw3.h>
 #include <include/vertices.h>
+#include <include/shader.h>
 #include <stb_image.h>
+#include <glm.hpp>
+#include <ext/quaternion_trigonometric.inl>
+#include <ext/matrix_clip_space.hpp>
+#include <ext/matrix_transform.hpp>
 
-Renderer::Renderer(const int32_t width, const int32_t height,
-                   const char* const title){
 
-    if (!setup_(width, height, title)){ return; }
+Renderer::Renderer() {
 
-    // NOTE(threadedstream): do i need to generate vao here?
     glGenVertexArrays(1, &vao_);
 }
 
-static void framebufferResizedCallback(GLFWwindow *window, int32_t width, int32_t height) {
-    glViewport(0, 0, width, height);
+std::function<void()> Renderer::drawTexturedRectangle() {
+    prepareBufferObjects_(textured_triangle_vertices, sizeof(textured_triangle_vertices),
+                                   textured_triangle_indices, sizeof(textured_triangle_indices));
+
+    uint32_t wall_texture, face_texture;
+    prepareTexture_(&wall_texture, &face_texture, TEXTURED_VERTEX_SHADER_2D, TEXTURED_FRAGMENT_SHADER_2D);
+
+    return [=] () -> void {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, wall_texture);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, face_texture);
+
+        glBindVertexArray(vao_);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    };
 }
 
-bool Renderer::setup_(const int32_t width, const int32_t height,
-                      const char *const title) noexcept {
-    window_ = glfwCreateWindow(width, height, title, nullptr, nullptr);
+std::function<void()> Renderer::drawTexturedCube() {
+    prepareBufferObjects_(textured_cube_vertices, sizeof(textured_cube_vertices));
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    uint32_t wall_texture, face_texture;
+    auto shader_program_id = prepareTexture_(&wall_texture, &face_texture, TEXTURED_VERTEX_SHADER_3D, TEXTURED_FRAGMENT_SHADER_3D);
 
-    if (!window_) {
-        spdlog::error("failed to initialize a window");
-        return false;
-    }
+    const glm::mat4 projection = glm::perspective(glm::pi<float>() * .25, 800.0 / 600.0, 0.1, 10000.0);
 
-    glfwMakeContextCurrent(window_);
-    glfwSetFramebufferSizeCallback(window_, framebufferResizedCallback);
+    glm::mat4 view(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        spdlog::error("failed to load gl procs");
-        return false;
-    }
+    glm::mat4 model(1.0f);
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3{1.0f, 0.0f, 0.0f});
 
-    return true;
+    const glm::mat4 mvp = projection * view * model;
+    Shader::passUniformMat4(mvp, "mvp", shader_program_id);
+
+    return [=] () -> void {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, wall_texture);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, face_texture);
+
+        glBindVertexArray(vao_);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    };
 }
 
-void Renderer::setInputHandler(InputHandler &&input_handler) const noexcept {
-    glfwSetKeyCallback(window_, input_handler);
-}
-
-void Renderer::drawTexturedTriangle(const Shader& shader,
-                                    const uint32_t wall_texture,
-                                    const uint32_t face_texture) {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, wall_texture);
-
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, face_texture);
-
-    shader.use();
-    glBindVertexArray(vao_);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-}
-
-void Renderer::prepareBufferObjects_(const float *vertices, const int32_t *indices) noexcept {
+void Renderer::prepareBufferObjects_(const float *vertices, const int32_t vertices_size,
+                                     const int32_t *indices, const int32_t indices_size) noexcept {
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
 
@@ -70,38 +73,37 @@ void Renderer::prepareBufferObjects_(const float *vertices, const int32_t *indic
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     // TODO(threadedstream): sizeof() might not work in case if "vertices" is not
     // an statically allocated array
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices_size, vertices, GL_STATIC_DRAW);
 
-    if (indices) {
+    if (indices && indices_size) {
         // NOTE(threadedstream): beget element array buffer object
         glGenBuffers(1, &ebo_);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_size, indices, GL_STATIC_DRAW);
     }
 
-    const int32_t stride = 8 * sizeof(float);
+    const int32_t stride = 5 * sizeof(float);
 
     // NOTE(threadedstream): binding vertex position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, nullptr /* 0 */);
     glEnableVertexAttribArray(0);
 
     // NOTE(threadedstream): binding vertex color attribute
-    const auto vertex_color_offset = (void *) (3 * sizeof(float));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, vertex_color_offset);
-    glEnableVertexAttribArray(1);
+//    const auto vertex_color_offset = (void *) (3 * sizeof(float));
+//    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, vertex_color_offset);
+//    glEnableVertexAttribArray(1);
 
     // NOTE(threadedstream): binding texture coordinates attribute
-    const auto tex_coords_offset = (void *) (6 * sizeof(float));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, tex_coords_offset);
-    glEnableVertexAttribArray(2);
-
+    const auto tex_coords_offset = (void *) (3 * sizeof(float));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, tex_coords_offset);
+    glEnableVertexAttribArray(1);
 }
 
-void Renderer::prepareTexture_(const Shader& shader) {
+uint32_t Renderer::prepareTexture_(uint32_t *wall_texture, uint32_t *face_texture,
+                               const int32_t vertex_shader_idx, const  int32_t fragment_shader_idx) {
     // NOTE(threadedstream): setting up the first texture
-    uint32_t wall_texture;
-    glGenTextures(1, &wall_texture);
-    glBindTexture(GL_TEXTURE_2D, wall_texture);
+    glGenTextures(1, wall_texture);
+    glBindTexture(GL_TEXTURE_2D, *wall_texture);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -121,9 +123,8 @@ void Renderer::prepareTexture_(const Shader& shader) {
     stbi_image_free(data);
 
     // NOTE(threadedstream): setting up the second texture
-    uint32_t face_texture;
-    glGenTextures(1, &face_texture);
-    glBindTexture(GL_TEXTURE_2D, face_texture);
+    glGenTextures(1, face_texture);
+    glBindTexture(GL_TEXTURE_2D, *face_texture);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -141,8 +142,18 @@ void Renderer::prepareTexture_(const Shader& shader) {
     }
 
     stbi_image_free(data);
+    auto shader_program_id = Shader::linkShaders(shader_map[vertex_shader_idx], shader_map[fragment_shader_idx]);
 
-    shader.use();
-    shader.passUniformInt(1, "face_texture_sampler");
-    shader.passUniformInt(0, "wall_texture_sampler");
+    Shader::use(shader_program_id);
+    Shader::passUniformInt(1, "face_texture_sampler", shader_program_id);
+    Shader::passUniformInt(0, "wall_texture_sampler", shader_program_id);
+
+    return shader_program_id;
+}
+
+
+void Renderer::destroy() noexcept {
+    glDeleteVertexArrays(1, &vao_);
+    glDeleteBuffers(1, &vbo_);
+    glDeleteBuffers(1, &ebo_);
 }
