@@ -34,6 +34,8 @@ set(REALTIME_SRC_FILES
         src/main.cpp
         src/renderer.cpp
         src/shader.cpp
+        src/sample_scene.cpp
+        src/camera.cpp
         )
 
 set(REALTIME_HEADER_FILES
@@ -41,6 +43,9 @@ set(REALTIME_HEADER_FILES
         include/vertices.h
         include/shader_sources.h
         include/renderer.h
+        include/sample_scene.h
+        include/scene.h
+        include/camera.h
         )
 
 add_executable(realtime ${REALTIME_SRC_FILES} ${REALTIME_HEADER_FILES})

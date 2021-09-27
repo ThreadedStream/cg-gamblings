@@ -3,7 +3,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include <include/renderer.h>
+#include <include/sample_scene.h>
 #include <include/vertices.h>
 
 class GlobalFrameManager;
@@ -34,6 +34,7 @@ void onFramebufferResized(GLFWwindow* window, int32_t width, int32_t height) {
 }
 
 void onKeyPressed(GLFWwindow *window, int32_t key, int32_t scancode, int32_t action, int32_t mods) {
+
 }
 
 
@@ -69,21 +70,25 @@ int main(int argc, const char *argv[]) {
         return -1;
     }
 
-    Renderer renderer;
+    // NOTE(threadedstream): static is needed for avoiding capturing in a lambda
+    static SampleScene scene; scene.setup();
 
-    const auto drawingFunc = renderer.drawTexturedCube();
-
+    float dt = 0.0f;
+    float last_frame = 0.0f;
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2, 0.4, 0.2, 0.5);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        drawingFunc();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        auto current_frame = static_cast<float>(glfwGetTime());
+        dt = current_frame - last_frame;
+        last_frame = current_frame;
+        scene.draw();
+        scene.handleInput(window, dt);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    renderer.destroy();
+    scene.destroy();
     // NOTE(threadedstream): should be called in main thread
     glfwTerminate();
     return 0;

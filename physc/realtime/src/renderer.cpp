@@ -10,6 +10,7 @@
 #include <ext/matrix_transform.hpp>
 
 
+
 Renderer::Renderer() {
 
     glGenVertexArrays(1, &vao_);
@@ -65,7 +66,6 @@ std::function<void()> Renderer::drawTexturedCube() {
 
 void Renderer::prepareBufferObjects_(const float *vertices, const int32_t vertices_size,
                                      const int32_t *indices, const int32_t indices_size) noexcept {
-    glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
 
     // NOTE(threadedstream): beget vertex buffer object
