@@ -39,17 +39,15 @@ void onKeyPressed(GLFWwindow *window, int32_t key, int32_t scancode, int32_t act
 
 
 int main(int argc, const char *argv[]) {
-    // NOTE(threadedstream): initializing glfwInit in main thread, so to avoid
-    // unnecessary terminations
+
     GLFWwindow* window;
 
-
+    // NOTE(threadedstream): initializing glfwInit in main thread, as it is dictated by spec
     if (!glfwInit()){
         return -1;
     }
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "I don't know math", nullptr, nullptr);
-
 
     if (!window) {
         spdlog::error("failed to initialize a window");
@@ -71,7 +69,9 @@ int main(int argc, const char *argv[]) {
     }
 
     // NOTE(threadedstream): static is needed for avoiding capturing in a lambda
-    static SampleScene scene; scene.setup();
+    SampleScene scene; scene.setup();
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     float dt = 0.0f;
     float last_frame = 0.0f;
@@ -79,7 +79,7 @@ int main(int argc, const char *argv[]) {
         glClearColor(0.2, 0.4, 0.2, 0.5);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         auto current_frame = static_cast<float>(glfwGetTime());
-        dt = current_frame - last_frame;
+        dt = (current_frame - last_frame);
         last_frame = current_frame;
         scene.draw();
         scene.handleInput(window, dt);

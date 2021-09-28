@@ -16,10 +16,6 @@
     glShaderSource(shader, 1, &(shader_source), nullptr); \
     glCompileShader(shader); \
 
-// TODO(threadedstream): hinder implementation, make structure look more "layerized"
-// By "layerization" i mean the structure when one has the files containing the actual implementation
-// details of some functionality, but also another header file serving as an intermediate level
-// between functionality and the rest of the world.
 
 // TODO(threadedstream): probably, organize a structure where there's a ShaderProvider class
 // having Shader as a member.

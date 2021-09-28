@@ -11,8 +11,11 @@
 #define FORCE_INLINE inline
 #endif
 
-#define WIDTH 600
-#define HEIGHT 400
+constexpr int32_t WIDTH = 800;
+constexpr int32_t HEIGHT = 600;
+
+constexpr int32_t HALF_WIDTH = WIDTH / 2;
+constexpr int32_t HALF_HEIGHT = HEIGHT / 2;
 
 using Color = glm::vec3;
 using Point3 = glm::vec3;
@@ -28,7 +31,7 @@ constexpr Color colors[2] = {Color{1.0f, 1.0f, 1.0f},
 static const int half_width = WIDTH / 2;
 static const int half_height = HEIGHT / 2;
 
-static constexpr float pi = 3.1415926535897932;
+static constexpr float pi = 3.141592653;
 
 [[maybe_unused]] static const auto to_radians = [](float degrees) -> float {
     return (degrees * pi) / 180.0f;
@@ -81,8 +84,6 @@ static const auto vector_near_zero = [](const glm::vec3 &v, float tolerance) -> 
            && (std::fabs(v.y) < tolerance)
            && (std::fabs(v.z) < tolerance);
 };
-
-#define MIN(x, y) (x) < (y) ? (x) : (y)
 
 #define RECT_SPEED 150
 

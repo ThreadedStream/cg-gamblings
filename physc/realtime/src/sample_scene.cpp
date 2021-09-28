@@ -125,7 +125,7 @@ void SampleScene::prepareTextureData() {
     Shader::passUniformInt(1, "face_texture_sampler", shader_program_id_);
 }
 
-void SampleScene::handleInput(GLFWwindow *window, const float dt) {
+void SampleScene::handleKeyboardInput(GLFWwindow* window, float dt) {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera.move(camera_speed_ * dt, Direction::FORWARD);
         dirty_ = true;
@@ -141,13 +141,18 @@ void SampleScene::handleInput(GLFWwindow *window, const float dt) {
     else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         camera.move(camera_speed_ * dt, Direction::RIGHT);
         dirty_ = true;
-    } else if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        model_ = glm::rotate(model_, glm::radians(55.0f), glm::vec3{1.0f, 0.0f, 0.0f});
+    }
+}
+
+void SampleScene::handleMouseInput(GLFWwindow* window, float dt) {
+    double mouse_pos_x, mouse_pos_y;
+    glfwGetCursorPos(window, &mouse_pos_x, &mouse_pos_y);
+
+    if (mouse_pos_x != last_mouse_pos_x_ && mouse_pos_y != last_mouse_pos_y_) {
+        camera.rotate(mouse_pos_x, mouse_pos_y,dt, first_mouse_);
+        last_mouse_pos_x_ = mouse_pos_x;
+        last_mouse_pos_y_ = mouse_pos_y;
         dirty_ = true;
     }
 }
 
-void SampleScene::mouseCallback(GLFWwindow* window, double x_pos, double y_pos) {
-    if (first_mouse_) {
-    }
-}

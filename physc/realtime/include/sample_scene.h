@@ -4,6 +4,7 @@
 #include <functional>
 #include <glm.hpp>
 #include <include/camera.h>
+#include <shared/defs.hpp>
 
 struct GLFWwindow;
 
@@ -17,14 +18,19 @@ public:
 
     void destroy() override;
 
-    void handleInput(GLFWwindow* window, float dt);
+    inline void handleInput(GLFWwindow* window, float dt) {
+        handleKeyboardInput(window, dt);
+        handleMouseInput(window, dt);
+    }
 
 private:
     void prepareBufferObjects() override;
 
     void prepareTextureData() override;
 
-    void mouseCallback(GLFWwindow* window, double x_pos, double y_pos);
+    void handleKeyboardInput(GLFWwindow* window, float dt);
+
+    void handleMouseInput(GLFWwindow* window, float dt);
 
 private:
     uint32_t shader_program_id_{0};
@@ -37,4 +43,6 @@ private:
     Camera camera;
     bool first_mouse_{true};
     bool dirty_{false};
+    double last_mouse_pos_x_{HALF_WIDTH};
+    double last_mouse_pos_y_{HALF_HEIGHT};
 };
