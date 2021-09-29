@@ -21,6 +21,12 @@ public:
 
     [[nodiscard]] glm::mat4 view() const noexcept { return glm::lookAt(eye_, eye_ + front_, up_); }
 
+    // vec3 z = front
+    // vec3 x = cross(up, z)
+    // vec3 y = cross(z, x)
+
+    //
+
 private:
     double last_x_{400.0};
     double last_y_{300.0};

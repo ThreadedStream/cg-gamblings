@@ -72,6 +72,7 @@ int main(int argc, const char *argv[]) {
     SampleScene scene; scene.setup();
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glEnable(GL_DEPTH_TEST);
 
     float dt = 0.0f;
     float last_frame = 0.0f;

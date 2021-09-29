@@ -145,10 +145,9 @@ void SampleScene::handleKeyboardInput(GLFWwindow* window, float dt) {
 }
 
 void SampleScene::handleMouseInput(GLFWwindow* window, float dt) {
-    double mouse_pos_x, mouse_pos_y;
-    glfwGetCursorPos(window, &mouse_pos_x, &mouse_pos_y);
-
-    if (mouse_pos_x != last_mouse_pos_x_ && mouse_pos_y != last_mouse_pos_y_) {
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT)) {
+        double mouse_pos_x, mouse_pos_y;
+        glfwGetCursorPos(window, &mouse_pos_x, &mouse_pos_y);
         camera.rotate(mouse_pos_x, mouse_pos_y,dt, first_mouse_);
         last_mouse_pos_x_ = mouse_pos_x;
         last_mouse_pos_y_ = mouse_pos_y;
