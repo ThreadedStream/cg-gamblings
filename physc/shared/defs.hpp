@@ -37,27 +37,32 @@ static constexpr float pi = 3.141592653;
     return (degrees * pi) / 180.0f;
 };
 
-static const auto random_double = []() -> double {
-    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+// NOTE(threadedstream): for now, we assume that T is float or double
+template<typename T>
+static const auto random_real_number = []() -> T {
+    static std::uniform_real_distribution<T> distribution(0.0, 1.0);
     static std::mt19937 generator;
     return distribution(generator);
 };
 
-static const auto random_double_between = [](double min, double max) -> double {
-    return min + (max - min) * random_double();
+template<typename T>
+static const auto random_real_between = [](T min, T max) -> T {
+    return min + (max - min) * random_real_number<T>();
 };
 
-static const auto random_vec3 = [](double min, double max) -> glm::vec3 {
+template <typename T>
+static const auto random_vec3 = [](T min, T max) -> glm::vec3 {
     return glm::vec3{
-            random_double_between(min, max),
-            random_double_between(min, max),
-            random_double_between(min, max)
+            random_real_between<T>(min, max),
+            random_real_between<T>(min, max),
+            random_real_between<T>(min, max)
     };
 };
 
 static const auto random_point_in_unit_sphere = []() -> Point3 {
     while (true) {
-        auto pt = random_vec3(-1, 1);
+        auto pt = random_vec3<float>(-1, 1);
         if (glm::length(pt) >= 1) continue;
         return pt;
     }

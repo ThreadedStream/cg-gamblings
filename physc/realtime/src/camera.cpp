@@ -1,21 +1,21 @@
 #include <include/camera.h>
 #include <spdlog/spdlog.h>
 
-void Camera::move(float factor, const Direction &dir) noexcept {
+void Camera::move(float dt, const Direction &dir) noexcept {
     switch (dir) {
         case Direction::FORWARD:
-            eye_ += factor * front_;
+            eye_ += camera_speed_ * dt * front_;
             break;
         case Direction::BACKWARD:
-            eye_ -= factor * front_;
+            eye_ -= camera_speed_ * dt * front_;
             break;
         case Direction::LEFT:
             right_ = glm::normalize(glm::cross(front_, up_));
-            eye_ -= right_ * factor;
+            eye_ -= right_ * camera_speed_ * dt;
             break;
         case Direction::RIGHT:
             right_ = glm::normalize(glm::cross(front_, up_));
-            eye_ += right_ * factor;
+            eye_ += right_ * camera_speed_ * dt;
             break;
         default:
             break;
@@ -24,7 +24,7 @@ void Camera::move(float factor, const Direction &dir) noexcept {
 
 void Camera::rotate(double x_pos, double y_pos, float dt, bool &initial) {
 
-    static const float sensitivity = 0.009f;
+    static const float sensitivity = 0.002f;
     static float vertical_angle{0.0f}, horizontal_angle{0.0f};
 
     const auto dx = static_cast<float>(last_x_ - x_pos);
@@ -32,6 +32,9 @@ void Camera::rotate(double x_pos, double y_pos, float dt, bool &initial) {
 
     horizontal_angle += dx * sensitivity;
     vertical_angle += dy * sensitivity;
+
+    spdlog::info("yaw: {}, pitch: {}", horizontal_angle, vertical_angle);
+
 
     last_x_ = x_pos;
     last_y_ = y_pos;

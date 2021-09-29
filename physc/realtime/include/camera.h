@@ -15,7 +15,7 @@ public:
 
     Camera () {  }
 
-    void move(float factor, const Direction& dir) noexcept;
+    void move(float dt, const Direction& dir) noexcept;
 
     void rotate(double x_pos, double y_pos, float dt, bool &initial);
 
@@ -31,6 +31,8 @@ private:
     double last_x_{400.0};
     double last_y_{300.0};
     float camera_sensitivity_{0.001f};
+    float camera_speed_{10.0f};
+    // TODO(threadedstream): rename yaw and pitch to horizontal_angle and vertical_angle, respectively
     float yaw_{-89.f};
     float pitch_{0.0f};
     glm::vec3 eye_{0.0f, 0.0f, 2.0f};

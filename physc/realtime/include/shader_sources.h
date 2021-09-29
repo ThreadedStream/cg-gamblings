@@ -1,41 +1,5 @@
 #pragma once
 
-static const char *triangle_vertex_shader = R"shader(
-    #version 330 core
-    layout (location = 0) in vec3 triangle_pos;
-    void main() {
-        gl_Position = vec4(triangle_pos.x, triangle_pos.y, triangle_pos.z, 1.0f);
-    }
-)shader";
-
-static const char *triangle_fragment_shader = R"shader(
-    #version 330 core
-    out vec4 frag_color;
-
-    void main() {
-        frag_color = vec4(1.0f, 1.0f, 0.0f, 1.0f);
-    }
-)shader";
-
-static const char *cube_vertex_shader = R"shader(
-    #version 330 core
-    layout (location = 0) in vec3 vertex_pos_model;
-    uniform mat4x4 mvp;
-
-    void main() {
-        gl_Position = mvp * vec4(vertex_pos_model, 1.0f);
-    }
-)shader";
-
-static const char *cube_fragment_shader = R"shader(
-    #version 330 core
-    out vec4 frag_color;
-
-    void main() {
-        frag_color = vec4(1.0f, 0.0f, 1.0f, 1.0f);
-    }
-)shader";
-
 static const char *textured_vertex_shader_2d = R"shader(
     #version 330 core
     layout (location = 0) in vec3 vertex_pos;
@@ -105,24 +69,51 @@ static const char *textured_fragment_shader_3d = R"shader(
     }
 )shader";
 
+static const char* colored_vertex_shader_3d = R"shader(
+    #version 330 core
+
+    layout(location = 0) in vec3 vertex_pos;
+    layout(location = 1) in vec3 vertex_color;
+
+    out vec3 color;
+
+    uniform mat4 mvp;
+
+    void main() {
+        gl_Position = mvp * vec4(vertex_pos, 1.0f);
+        color = vertex_color;
+    }
+)shader";
+
+static const char* colored_fragment_shader_3d = R"shader(
+    #version 330 core
+
+    in vec3 color;
+
+    uniform vec4 light_color
+
+    out vec4 frag_color;
+
+    void main() {
+        frag_color = vec4(color, 1.0f) * light_color;
+    }
+)shader";
+
+
 enum shaders {
-    TRIANGLE_VERTEX_SHADER,
-    TRIANGLE_FRAGMENT_SHADER,
-    CUBE_VERTEX_SHADER,
-    CUBE_FRAGMENT_SHADER,
     TEXTURED_VERTEX_SHADER_2D,
     TEXTURED_FRAGMENT_SHADER_2D,
     TEXTURED_VERTEX_SHADER_3D,
-    TEXTURED_FRAGMENT_SHADER_3D
+    TEXTURED_FRAGMENT_SHADER_3D,
+    COLORED_VERTEX_SHADER_3D,
+    COLORED_FRAGMENT_SHADER_3D
 };
 
 static const char *shader_map[] = {
-        triangle_vertex_shader,
-        triangle_fragment_shader,
-        cube_vertex_shader,
-        cube_fragment_shader,
         textured_vertex_shader_2d,
         textured_fragment_shader_2d,
         textured_vertex_shader_3d,
-        textured_fragment_shader_3d
+        textured_fragment_shader_3d,
+        colored_vertex_shader_3d,
+        colored_fragment_shader_3d
 };

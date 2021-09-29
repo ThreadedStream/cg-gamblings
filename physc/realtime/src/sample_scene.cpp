@@ -61,17 +61,18 @@ void SampleScene::prepareBufferObjects() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
     // TODO(threadedstream): sizeof() might not work in case if "vertices" is not
     // an statically allocated array
-    glBufferData(GL_ARRAY_BUFFER, sizeof(textured_cube_vertices), textured_cube_vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(textured_cube_vertices), textured_cube_vertices , GL_STATIC_DRAW);
 
-    const int32_t stride = 5 * sizeof(float);
+    const int32_t stride = sizeof(SimpleVertex);
 
-    // NOTE(threadedstream): binding vertex position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *) 0 /* 0 */);
+
+    const auto position_offset = offsetof(SimpleVertex, position);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*) position_offset /* 0 */);
     glEnableVertexAttribArray(0);
 
     // NOTE(threadedstream): binding texture coordinates attribute
-    const auto tex_coords_offset = (void *) (3 * sizeof(float));
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, tex_coords_offset);
+    const auto tex_coords_offset = offsetof(SimpleVertex, tex_coords);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*) tex_coords_offset);
     glEnableVertexAttribArray(1);
 }
 
@@ -127,19 +128,19 @@ void SampleScene::prepareTextureData() {
 
 void SampleScene::handleKeyboardInput(GLFWwindow* window, float dt) {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        camera.move(camera_speed_ * dt, Direction::FORWARD);
+        camera.move(dt, Direction::FORWARD);
         dirty_ = true;
     }
     else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        camera.move(camera_speed_ * dt, Direction::BACKWARD);
+        camera.move(dt, Direction::BACKWARD);
         dirty_ = true;
     }
     else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        camera.move(camera_speed_ * dt, Direction::LEFT);
+        camera.move(dt, Direction::LEFT);
         dirty_ = true;
     }
     else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        camera.move(camera_speed_ * dt, Direction::RIGHT);
+        camera.move(dt, Direction::RIGHT);
         dirty_ = true;
     }
 }
@@ -148,7 +149,7 @@ void SampleScene::handleMouseInput(GLFWwindow* window, float dt) {
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT)) {
         double mouse_pos_x, mouse_pos_y;
         glfwGetCursorPos(window, &mouse_pos_x, &mouse_pos_y);
-        camera.rotate(mouse_pos_x, mouse_pos_y,dt, first_mouse_);
+        camera.rotate(mouse_pos_x, mouse_pos_y, dt,first_mouse_);
         last_mouse_pos_x_ = mouse_pos_x;
         last_mouse_pos_y_ = mouse_pos_y;
         dirty_ = true;

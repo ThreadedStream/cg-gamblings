@@ -2,7 +2,6 @@
 
 #include "scene.h"
 #include <functional>
-#include <glm.hpp>
 #include <include/camera.h>
 #include <shared/defs.hpp>
 
