@@ -1,0 +1,3 @@
+[submodule "physc/SDL"]
+	path = physc/SDL
+	url = https://github.com/libsdl-org/SDL
