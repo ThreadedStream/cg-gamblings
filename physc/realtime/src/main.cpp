@@ -5,6 +5,9 @@
 
 #include <include/sample_scene.h>
 #include <include/vertices.h>
+#include <include/audio.h>
+#include <SDL2/SDL.h>
+
 
 class GlobalFrameManager;
 
@@ -47,6 +50,8 @@ int main(int argc, const char *argv[]) {
         return -1;
     }
 
+    SDL_Init(SDL_INIT_AUDIO);
+
     window = glfwCreateWindow(WIDTH, HEIGHT, "I don't know math", nullptr, nullptr);
 
     if (!window) {
@@ -70,18 +75,28 @@ int main(int argc, const char *argv[]) {
 
     // NOTE(threadedstream): static is needed for avoiding capturing in a lambda
     SampleScene scene; scene.setup();
+    Audio audio;
+    const auto audio_specs = AudioSpecs{
+        44100,
+        AUDIO_S16SYS,
+        2,
+        512,
+        4
+    };
+    const auto audio_was_loaded = audio.loadIntoMemory("../../assets/jazz_piano_intro.wav", audio_specs);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glEnable(GL_DEPTH_TEST);
 
     float dt = 0.0f;
     float last_frame = 0.0f;
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window) && audio_was_loaded) {
         glClearColor(0.2, 0.4, 0.2, 0.5);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         auto current_frame = static_cast<float>(glfwGetTime());
         dt = (current_frame - last_frame);
         last_frame = current_frame;
+        audio.play(-1, 0);
         scene.draw();
         scene.handleInput(window, dt);
 
@@ -92,6 +107,7 @@ int main(int argc, const char *argv[]) {
     scene.destroy();
     // NOTE(threadedstream): should be called in main thread
     glfwTerminate();
+    SDL_Quit();
     return 0;
 }
 
