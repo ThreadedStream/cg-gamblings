@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="physc" targetName="realtime" />
+      <config projectName="physc" targetName="STB_IMAGE_LIB" />
+      <config projectName="physc" targetName="physc" />
+      <config projectName="physc" targetName="GLAD_LIB" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug-gcc" ENABLED="true" GENERATION_DIR="build" CONFIG_NAME="Debug" TOOLCHAIN_NAME="gcc" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2e99689c-856f-42c8-809f-4d8c4e052d21" name="Changes" comment="just added audio support" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-gcc" />
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/build">
+          <activation />
+        </task>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="realtime" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="jyzl3rco" />
+  </component>
+  <component name="ProjectId" id="1xrVjYTK48GGllcVfPGXO4dgJCh" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.advertisement.text.has.clang-format" value="true" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="cmake.loaded.for.project" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.realtime">
+    <configuration name="GLAD_LIB" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="physc" TARGET_NAME="GLAD_LIB" CONFIG_NAME="Debug-gcc">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="STB_IMAGE_LIB" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="physc" TARGET_NAME="STB_IMAGE_LIB" CONFIG_NAME="Debug-gcc">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="physc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="physc" TARGET_NAME="physc" CONFIG_NAME="Debug-gcc" RUN_TARGET_PROJECT_NAME="physc" RUN_TARGET_NAME="physc">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="realtime" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="physc" TARGET_NAME="realtime" CONFIG_NAME="Debug-gcc" RUN_TARGET_PROJECT_NAME="physc" RUN_TARGET_NAME="realtime">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.physc" />
+      <item itemvalue="CMake Application.GLAD_LIB" />
+      <item itemvalue="CMake Application.realtime" />
+      <item itemvalue="CMake Application.STB_IMAGE_LIB" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2e99689c-856f-42c8-809f-4d8c4e052d21" name="Changes" comment="" />
+      <created>1631113330195</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1631113330195</updated>
+      <workItem from="1631113331541" duration="437000" />
+      <workItem from="1631113788725" duration="666000" />
+      <workItem from="1631115627447" duration="1780000" />
+      <workItem from="1631117428787" duration="1789000" />
+      <workItem from="1631119239642" duration="1788000" />
+      <workItem from="1631121048161" duration="1827000" />
+      <workItem from="1631122896175" duration="2042000" />
+      <workItem from="1631124978712" duration="1850000" />
+      <workItem from="1631126852783" duration="240000" />
+      <workItem from="1631195972359" duration="1597000" />
+      <workItem from="1631197750166" duration="1780000" />
+      <workItem from="1631199924224" duration="1785000" />
+      <workItem from="1631201816589" duration="1863000" />
+      <workItem from="1631203716046" duration="1783000" />
+      <workItem from="1631205523559" duration="1783000" />
+      <workItem from="1631207329678" duration="1596000" />
+      <workItem from="1631209276964" duration="1822000" />
+      <workItem from="1631211128216" duration="530000" />
+      <workItem from="1631281134254" duration="1475000" />
+      <workItem from="1631282663483" duration="1785000" />
+      <workItem from="1631284573876" duration="1789000" />
+      <workItem from="1631286386314" duration="1448000" />
+      <workItem from="1631288395020" duration="1644000" />
+      <workItem from="1631291921335" duration="1088000" />
+      <workItem from="1631299767960" duration="1786000" />
+      <workItem from="1631301583721" duration="1780000" />
+      <workItem from="1631303388493" duration="1040000" />
+      <workItem from="1631458304876" duration="598000" />
+      <workItem from="1631465810586" duration="2531000" />
+      <workItem from="1631468362337" duration="1788000" />
+      <workItem from="1631470173480" duration="2114000" />
+      <workItem from="1631472310779" duration="978000" />
+      <workItem from="1631533358941" duration="1235000" />
+      <workItem from="1631541215795" duration="1170000" />
+      <workItem from="1631542421132" duration="1776000" />
+      <workItem from="1631544223618" duration="1784000" />
+      <workItem from="1631546145915" duration="1828000" />
+      <workItem from="1631548093210" duration="1779000" />
+      <workItem from="1631549948786" duration="1092000" />
+      <workItem from="1631551783527" duration="2090000" />
+      <workItem from="1631553902148" duration="744000" />
+      <workItem from="1631555733714" duration="1408000" />
+      <workItem from="1631557556011" duration="1702000" />
+      <workItem from="1631559365753" duration="3045000" />
+      <workItem from="1631563489104" duration="375000" />
+      <workItem from="1631639955654" duration="1487000" />
+      <workItem from="1631641737990" duration="1862000" />
+      <workItem from="1631643711132" duration="1975000" />
+      <workItem from="1631646365612" duration="563000" />
+      <workItem from="1631688030723" duration="1243000" />
+      <workItem from="1631691641055" duration="1515000" />
+      <workItem from="1631693404184" duration="1787000" />
+      <workItem from="1631695207565" duration="1593000" />
+      <workItem from="1631702477445" duration="1797000" />
+      <workItem from="1631704291871" duration="1808000" />
+      <workItem from="1631724622339" duration="1748000" />
+      <workItem from="1631726418865" duration="1839000" />
+      <workItem from="1631728280727" duration="1789000" />
+      <workItem from="1631730137694" duration="1789000" />
+      <workItem from="1631731952982" duration="1839000" />
+      <workItem from="1631734855146" duration="67000" />
+      <workItem from="1631774693295" duration="236000" />
+      <workItem from="1631775061580" duration="785000" />
+      <workItem from="1631802142573" duration="9502000" />
+      <workItem from="1631887458367" duration="13024000" />
+      <workItem from="1631975995322" duration="5704000" />
+      <workItem from="1631996880535" duration="942000" />
+      <workItem from="1632028986628" duration="1480000" />
+      <workItem from="1632060616532" duration="3885000" />
+      <workItem from="1632151779058" duration="9409000" />
+      <workItem from="1632238295336" duration="8834000" />
+      <workItem from="1632287657934" duration="3833000" />
+      <workItem from="1632315979703" duration="2150000" />
+      <workItem from="1632333953046" duration="4297000" />
+      <workItem from="1632373044042" duration="38000" />
+      <workItem from="1632404837196" duration="16967000" />
+      <workItem from="1632496281080" duration="12589000" />
+      <workItem from="1632755710351" duration="15174000" />
+      <workItem from="1632836177734" duration="12562000" />
+      <workItem from="1632932105316" duration="7900000" />
+      <workItem from="1633006612798" duration="8615000" />
+      <workItem from="1633093951176" duration="364000" />
+    </task>
+    <task id="LOCAL-00001" summary="added drawing circle routine">
+      <created>1631127082090</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1631127082090</updated>
+    </task>
+    <task id="LOCAL-00002" summary="newbie ray tracer coming up">
+      <created>1631211294677</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1631211294677</updated>
+    </task>
+    <task id="LOCAL-00003" summary="got my first kind of sphere (ellipse) on image!!!!">
+      <created>1631304170048</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1631304170048</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added plane class">
+      <created>1631473943836</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1631473943836</updated>
+    </task>
+    <task id="LOCAL-00005" summary="created a unified hittable interface">
+      <created>1631563689994</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1631563689995</updated>
+    </task>
+    <task id="LOCAL-00006" summary="populated scene with multiple objects">
+      <created>1631706027347</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1631706027347</updated>
+    </task>
+    <task id="LOCAL-00007" summary="made ray bounce off of a sphere in bunch of directions">
+      <created>1631775243306</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1631775243306</updated>
+    </task>
+    <task id="LOCAL-00008" summary="finally got a sphere on the picture">
+      <created>1631812586793</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1631812586793</updated>
+    </task>
+    <task id="LOCAL-00009" summary="managed to generate a somewhat realistic image.">
+      <created>1631903644960</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1631903644960</updated>
+    </task>
+    <task id="LOCAL-00010" summary="written matrix inversion procedure">
+      <created>1632161887937</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1632161887937</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fiddling with a camera">
+      <created>1632248162876</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1632248162876</updated>
+    </task>
+    <task id="LOCAL-00012" summary="hooked stb_image up, started messing with textures">
+      <created>1632291484422</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1632291484422</updated>
+    </task>
+    <task id="LOCAL-00013" summary="some fixes">
+      <created>1632373072882</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1632373072883</updated>
+    </task>
+    <task id="LOCAL-00014" summary="broken main down to separate classes.">
+      <created>1632426103218</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1632426103218</updated>
+    </task>
+    <task id="LOCAL-00015" summary="finally rendered a cube">
+      <created>1632510577201</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1632510577201</updated>
+    </task>
+    <task id="LOCAL-00016" summary="decided to break everything down to various scenes, constructed a camera class">
+      <created>1632771106760</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1632771106760</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fixing camera rotations">
+      <created>1632853977802</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1632853977802</updated>
+    </task>
+    <task id="LOCAL-00018" summary="on the verge of constructing a lighting scene">
+      <created>1632939907281</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1632939907282</updated>
+    </task>
+    <task id="LOCAL-00019" summary="just added audio support">
+      <created>1633094174611</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1633094174611</updated>
+    </task>
+    <task id="LOCAL-00020" summary="just added audio support">
+      <created>1633094184067</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1633094184067</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added drawing circle routine" />
+    <MESSAGE value="newbie ray tracer coming up" />
+    <MESSAGE value="got my first kind of sphere (ellipse) on image!!!!" />
+    <MESSAGE value="added plane class" />
+    <MESSAGE value="created a unified hittable interface" />
+    <MESSAGE value="populated scene with multiple objects" />
+    <MESSAGE value="made ray bounce off of a sphere in bunch of directions" />
+    <MESSAGE value="finally got a sphere on the picture" />
+    <MESSAGE value="managed to generate a somewhat realistic image." />
+    <MESSAGE value="written matrix inversion procedure" />
+    <MESSAGE value="fiddling with a camera" />
+    <MESSAGE value="hooked stb_image up, started messing with textures" />
+    <MESSAGE value="some fixes" />
+    <MESSAGE value="broken main down to separate classes." />
+    <MESSAGE value="finally rendered a cube" />
+    <MESSAGE value="decided to break everything down to various scenes, constructed a camera class" />
+    <MESSAGE value="fixing camera rotations" />
+    <MESSAGE value="on the verge of constructing a lighting scene" />
+    <MESSAGE value="just added audio support" />
+    <option name="LAST_COMMIT_MESSAGE" value="just added audio support" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/lib/src/plane.cpp</url>
+          <line>6</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/realtime/src/main.cpp</url>
+          <line>52</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/realtime/src/audio.cpp</url>
+          <line>6</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="(void*)textured_cube_vertices" language="ObjectiveC" />
+        <watch expression="(float*) column_wise_vertices" language="ObjectiveC" />
+        <watch expression="(float*) (column_wise_vertices + 1)" language="ObjectiveC" />
+        <watch expression="sizeof(textured_cube_vertices)" language="ObjectiveC" />
+        <watch expression="buffer_data + 4" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
