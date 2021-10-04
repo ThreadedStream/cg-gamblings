@@ -4,10 +4,11 @@
 #include <GLFW/glfw3.h>
 
 #include <include/sample_scene.h>
-#include <include/vertices.h>
 #include <include/audio.h>
 #include <SDL2/SDL.h>
 
+#include <thread>
+#include <iostream>
 
 class GlobalFrameManager;
 
@@ -75,7 +76,6 @@ int main(int argc, const char *argv[]) {
 
     // NOTE(threadedstream): static is needed for avoiding capturing in a lambda
     SampleScene scene; scene.setup();
-    Audio audio;
     const auto audio_specs = AudioSpecs{
         44100,
         AUDIO_S16SYS,
@@ -83,23 +83,32 @@ int main(int argc, const char *argv[]) {
         512,
         4
     };
-    const auto audio_was_loaded = audio.loadIntoMemory("../../assets/jazz_piano_intro.wav", audio_specs);
+    Audio audio(audio_specs);
+    if (!audio.is_constructed()) {
+        glfwTerminate();
+        return -1;
+    }
+
+
+
+    const auto was_loaded = audio.loadMusicIntoMemory("../../assets/jazz_piano_intro.wav");
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glEnable(GL_DEPTH_TEST);
 
     float dt = 0.0f;
     float last_frame = 0.0f;
-    while (!glfwWindowShouldClose(window) && audio_was_loaded) {
+
+    std::thread thread(&Audio::playMusicalSample,audio, 2);
+
+    while (!glfwWindowShouldClose(window) && was_loaded) {
         glClearColor(0.2, 0.4, 0.2, 0.5);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         auto current_frame = static_cast<float>(glfwGetTime());
         dt = (current_frame - last_frame);
         last_frame = current_frame;
-        audio.play(-1, 0);
         scene.draw();
         scene.handleInput(window, dt);
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -108,6 +117,9 @@ int main(int argc, const char *argv[]) {
     // NOTE(threadedstream): should be called in main thread
     glfwTerminate();
     SDL_Quit();
+
+    thread.join();
+
     return 0;
 }
 

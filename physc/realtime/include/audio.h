@@ -1,15 +1,24 @@
 #include <SDL2/SDL_mixer.h>
 #include <cstdint>
-
+#include <cassert>
 
 using MixChunk = Mix_Chunk;
+using MixMusic = Mix_Music;
 
 
 // NOTE(threadedstream): just to follow code writing convention
 constexpr  int32_t (*openAudio) (int32_t frequency, uint16_t format, int32_t channels, int32_t chunk_size) = &Mix_OpenAudio;
 constexpr  int32_t (*allocateChannels)(int32_t num_channels) = &Mix_AllocateChannels;
 constexpr  const char* (*getAudioFailureReason) () = &SDL_GetError;
+
+// music-specific typedefs
+constexpr  MixMusic* (*loadMusic) (const char* file) = &Mix_LoadMUS;
+constexpr  int32_t (*playMusic) (MixMusic* music, int32_t loops) = &Mix_PlayMusic;
+constexpr  void (*freeMusic)(MixMusic* music) = &Mix_FreeMusic;
+constexpr  int32_t (*configureMusicVolume) (int32_t volume) = &Mix_VolumeMusic;
+
 constexpr  void (*freeChunk)(MixChunk* chunk) = &Mix_FreeChunk;
+
 constexpr  void (*closeAudio)() = &Mix_CloseAudio;
 
 #define LOAD_WAV(file) Mix_LoadWAV(file)
@@ -28,17 +37,46 @@ struct AudioSpecs {
 class Audio {
 public:
 
-    bool loadIntoMemory(const char* wav_file, const AudioSpecs& audio_specs);
+    Audio(const AudioSpecs& audio_specs);
 
-    inline void play(int32_t channel, int32_t loops) {
-        PLAY_CHANNEL(channel, sample_, loops);
+    bool loadChunkIntoMemory(const char* wav_file);
+    bool loadMusicIntoMemory(const char* file);
+
+    inline void playChunkedSample(int32_t channel, int32_t loops) {
+        assert(chunked_sample_ && "chunked_sample_ is nullptr");
+        PLAY_CHANNEL(channel, chunked_sample_, loops);
+    }
+
+    inline void playMusicalSample(int32_t loops) {
+        assert(musical_sample_ && "musical_sample_ is nullptr");
+        playMusic(musical_sample_, loops);
+    }
+
+    inline void setMusicVolume(int32_t volume) {
+        configureMusicVolume(volume);
     }
 
     inline void destroy() {
-        freeChunk(sample_);
+        if (chunked_sample_){
+            freeChunk(chunked_sample_);
+        }
+        if (musical_sample_) {
+            freeMusic(musical_sample_);
+        }
         closeAudio();
     }
 
+
+    inline constexpr bool is_constructed() noexcept { return is_constructed_; }
+
 private:
-    MixChunk* sample_{nullptr};
+    void setup_(const AudioSpecs& audio_specs);
+
+private:
+    MixChunk* chunked_sample_{nullptr};
+    MixMusic* musical_sample_{nullptr};
+
+    // NOTE(threadedstream): sentinel to indicate whether the audio object
+    // has been properly constructed
+    bool is_constructed_{false};
 };

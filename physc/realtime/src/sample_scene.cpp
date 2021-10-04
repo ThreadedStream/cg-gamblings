@@ -142,6 +142,8 @@ void SampleScene::handleKeyboardInput(GLFWwindow* window, float dt) {
     else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         camera.move(dt, Direction::RIGHT);
         dirty_ = true;
+    } else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, 1);
     }
 }
 
