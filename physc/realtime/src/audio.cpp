@@ -1,6 +1,9 @@
 #include <include/audio.h>
 #include <spdlog/spdlog.h>
+#include <GLFW/glfw3.h>
+
 #include <cstdint>
+
 
 Audio::Audio(const AudioSpecs& audio_specs) {
     setup_(audio_specs);
@@ -22,6 +25,7 @@ void Audio::setup_(const AudioSpecs& audio_specs) {
         is_constructed_ = false;
     }
 
+    setMusicVolume(music_volume_);
     is_constructed_ = true;
 }
 
@@ -47,5 +51,15 @@ bool Audio::loadMusicIntoMemory(const char* const file) {
     }
 
     return true;
+}
+
+void Audio::handleInput(GLFWwindow* window) {
+    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+        music_volume_ += 8;
+        setMusicVolume(music_volume_);
+    } else if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+        music_volume_ -= 8;
+        setMusicVolume(music_volume_);
+    }
 }
 

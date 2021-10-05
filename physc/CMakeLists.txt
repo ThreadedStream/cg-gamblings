@@ -14,16 +14,17 @@ option(BUILD_AS_SHARED_LIB "Build physc as a shared lib" OFF)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 if (CMAKE_BUILD_TYPE=Release)
-    set(OPTIMIZATION_FLAG "-O2")
+    if (CMAKE_CXX_COMPILER STREQUAL "MSVC")
+        set(OPTIMIZATION_FLAG "/O2")
+    else()
+        set(OPTIMIZATION_FLAG "-O2")
+    endif()
 endif()
 
-if (USING_LAPTOP=ON)
-    set(CMAKE_CXX_COMPILER /usr/bin/clang++)
-    set(CMAKE_CXX_FLAGS ${CLANG_FLAGS})
-else()
-    set(CMAKE_CXX_COMPILER /usr/bin/c++)
-    set(CMAKE_CXX_FLAGS ${GCC_FLAGS} ${OPTIMIZATION_FLAG})
-endif ()
+if (CMAKE_CXX_COMPILER STREQUAL "Clang")
+
+endif()
+
 
 add_compile_options(-gdwarf-4)
 

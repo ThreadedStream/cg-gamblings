@@ -1,10 +1,13 @@
+#ifdef __linux
 #include <SDL2/SDL_mixer.h>
+#else
+#include <SDL_mixer.h>
+#endif
 #include <cstdint>
 #include <cassert>
 
 using MixChunk = Mix_Chunk;
 using MixMusic = Mix_Music;
-
 
 // NOTE(threadedstream): just to follow code writing convention
 constexpr  int32_t (*openAudio) (int32_t frequency, uint16_t format, int32_t channels, int32_t chunk_size) = &Mix_OpenAudio;
@@ -33,6 +36,7 @@ struct AudioSpecs {
     int32_t num_channels;
 };
 
+struct GLFWwindow;
 
 class Audio {
 public:
@@ -66,6 +70,7 @@ public:
         closeAudio();
     }
 
+    void handleInput(GLFWwindow* window);
 
     inline constexpr bool is_constructed() noexcept { return is_constructed_; }
 
@@ -76,6 +81,7 @@ private:
     MixChunk* chunked_sample_{nullptr};
     MixMusic* musical_sample_{nullptr};
 
+    int32_t music_volume_{0};
     // NOTE(threadedstream): sentinel to indicate whether the audio object
     // has been properly constructed
     bool is_constructed_{false};

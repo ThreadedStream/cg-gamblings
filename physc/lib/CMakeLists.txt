@@ -40,8 +40,12 @@ set(PHYSC_HEADER_FILES
         )
 
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
+if (UNIX)
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_image REQUIRED)
+elseif(WIN32)
+    # handle win32 case
+endif()
 
 if (USING_LAPTOP)
     set(SDL_LIB /usr/local/lib/libSDL2.so)

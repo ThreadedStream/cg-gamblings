@@ -5,10 +5,15 @@
 
 #include <include/sample_scene.h>
 #include <include/audio.h>
+// TODO(threadedstream): get rid of this
+#ifdef __linux
 #include <SDL2/SDL.h>
+#else
+#include <SDL.h>
+#undef main
+#endif
 
 #include <thread>
-#include <iostream>
 
 class GlobalFrameManager;
 
@@ -99,8 +104,8 @@ int main(int argc, const char *argv[]) {
     float dt = 0.0f;
     float last_frame = 0.0f;
 
-    std::thread thread(&Audio::playMusicalSample,audio, 2);
 
+    audio.playMusicalSample(6);
     while (!glfwWindowShouldClose(window) && was_loaded) {
         glClearColor(0.2, 0.4, 0.2, 0.5);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -109,6 +114,7 @@ int main(int argc, const char *argv[]) {
         last_frame = current_frame;
         scene.draw();
         scene.handleInput(window, dt);
+        audio.handleInput(window);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -118,7 +124,7 @@ int main(int argc, const char *argv[]) {
     glfwTerminate();
     SDL_Quit();
 
-    thread.join();
+    //thread.join();
 
     return 0;
 }

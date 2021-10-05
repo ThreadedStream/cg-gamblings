@@ -5,17 +5,26 @@ set(GLFW_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glfw/include)
 set(STB_INCLUDE ${CMAKE_SOURCE_DIR}/extern/stb/)
 set(GLAD_INCLUDE ${CMAKE_SOURCE_DIR}/extern/glad)
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_mixer REQUIRED)
+if (UNIX)
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
+elseif(WIN32)
+    set(SDL2_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/extern/SDL2/include)
+    set(SDL2_LIB ${CMAKE_SOURCE_DIR}/extern/SDL2/lib/x64/SDL2.lib )
+    set(SDL2_MIXER_LIB ${CMAKE_SOURCE_DIR}/extern/SDL2/lib/x64/SDL2_mixer.lib )
+   # set(SDL2_MIXER_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/SDL2/lib/x64/SDL2_mixer.dll)
+endif()
 
-set(USR_LOCAL_LIB /usr/local/lib/)
-set(USR_LIB /usr/lib/)
-set(USR_LIB_GNU /usr/lib/x86_64-linux-gnu/)
+find_library(GLFW_LIB NAMES glfw3dll.lib libglfw.so HINTS ${CMAKE_SOURCE_DIR}/extern/glfw/build/src
+                                                              ${CMAKE_SOURCE_DIR}/extern/glfw/build/src/Debug)
 
-find_library(GLFW_SHARED_LIB NAMES libglfw.so HINTS ${CMAKE_SOURCE_DIR}/extern/glfw/build/src)
 find_library(FREETYPE_SHARED_LIB NAMES libfreetype.so.6 HINTS ${USR_LIB_GNU})
 
-set(TARGET_LINK_LIBRARIES ${GLFW_SHARED_LIB} SDL2::Core SDL2::Mixer X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread ${FREETYPE_SHARED_LIB})
+if (UNIX)
+    set(TARGET_LINK_LIBRARIES ${GLFW_SHARED_LIB} SDL2::Core SDL2::Mixer X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread ${FREETYPE_SHARED_LIB})
+elseif(WIN32)
+    set(TARGET_LINK_LIBRARIES ${GLFW_LIB} ${SDL2_LIB} ${SDL2_MIXER_LIB})
+endif()
 
 add_library(STB_IMAGE_LIB ${CMAKE_SOURCE_DIR}/extern/stb/stb_image.cpp)
 add_library(GLAD_LIB ${CMAKE_SOURCE_DIR}/extern/glad/glad.c)
@@ -63,8 +72,6 @@ target_include_directories(realtime
         )
 
 set(CMAKE_CXX_STANDARD 17)
-
-set(LIB)
 
 target_link_libraries(realtime ${TARGET_LINK_LIBRARIES})
 
