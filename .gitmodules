@@ -1,3 +1,6 @@
 [submodule "physc/SDL"]
 	path = physc/SDL
 	url = https://github.com/libsdl-org/SDL
+[submodule "physc/extern/googletest"]
+	path = physc/extern/googletest
+	url = https://github.com/google/googletest

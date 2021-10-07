@@ -90,11 +90,18 @@ static const char* colored_fragment_shader_3d = R"shader(
 
     in vec3 color;
 
-    uniform vec4 light_color
+    uniform vec4 ambient_color;
+    uniform vec4 diffuse_color;
+    uniform vec4 specular_color;
 
     out vec4 frag_color;
 
+    vec4 calculate_direction_vector(vec4 to_light_source, vec4 normal) {
+
+    }
+
     void main() {
+
         frag_color = vec4(color, 1.0f) * light_color;
     }
 )shader";

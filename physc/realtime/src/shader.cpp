@@ -38,14 +38,22 @@ void Shader::passUniformMat4(const glm::mat4 &mat, const char *const identifier,
                              const uint32_t shader_program_id) noexcept {
 
 // TODO(threadedstream): enable caching of uniforms' location
-    auto mat_location = glGetUniformLocation(shader_program_id, identifier);
-    glUniformMatrix4fv(mat_location, 1, GL_FALSE, glm::value_ptr(mat));
+    auto target_location = glGetUniformLocation(shader_program_id, identifier);
+    glUniformMatrix4fv(target_location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void Shader::passUniformInt(const int32_t value, const char *const identifier,
                             const uint32_t shader_program_id) noexcept {
 
-    auto int_location = glGetUniformLocation(shader_program_id, identifier);
-    glUniform1i(int_location, value);
+    auto target_location = glGetUniformLocation(shader_program_id, identifier);
+    glUniform1i(target_location, value);
+}
+
+
+void Shader::passUniformVec4(const glm::vec4& value, const char* const identifier,
+                             const uint32_t shader_program_id) noexcept {
+
+    auto target_location = glGetUniformLocation(shader_program_id, identifier);
+    glUniform4fv(target_location, 1, glm::value_ptr(value));
 }
 

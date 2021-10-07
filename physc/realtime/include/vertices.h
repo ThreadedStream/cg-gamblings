@@ -24,10 +24,10 @@ struct SimpleVertex {
     glm::vec2 tex_coords; // 8
 };
 
-struct AdvancedVertex {
-    glm::vec3 position; // 12
-    glm::vec3 color; // 12
-};
+struct Vertex {
+    glm::vec3 position;
+    glm::vec3 color;
+} __attribute__((packed));
 
 
 //static constexpr SampleSceneVertex vertices[] = {
@@ -88,7 +88,7 @@ static constexpr SimpleVertex textured_cube_vertices[] = {
         {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec2{0.0f, 1.0f}}
 };
 
-static constexpr AdvancedVertex colored_cube_vertices[] = {
+static constexpr Vertex colored_cube_vertices[] = {
         {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 0.0f, 0.0f}},
         {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{1.0f, 0.0f, 1.0f}},
         {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}},

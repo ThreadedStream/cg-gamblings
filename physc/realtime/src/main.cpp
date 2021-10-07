@@ -3,7 +3,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include <include/sample_scene.h>
+#include <include/scene_manager.h>
 #include <include/audio.h>
 // TODO(threadedstream): get rid of this
 #ifdef __linux
@@ -12,6 +12,7 @@
 #include <SDL.h>
 #undef main
 #endif
+
 
 #include <thread>
 
@@ -47,6 +48,9 @@ void onKeyPressed(GLFWwindow *window, int32_t key, int32_t scancode, int32_t act
 }
 
 
+class LightingScene;
+class SampleScene;
+
 int main(int argc, const char *argv[]) {
 
     GLFWwindow* window;
@@ -80,7 +84,8 @@ int main(int argc, const char *argv[]) {
     }
 
     // NOTE(threadedstream): static is needed for avoiding capturing in a lambda
-    SampleScene scene; scene.setup();
+    auto current_scene = SceneManager::instance().switchUp<LightingScene>();
+    current_scene->setup();
     const auto audio_specs = AudioSpecs{
         44100,
         AUDIO_S16SYS,
@@ -94,8 +99,6 @@ int main(int argc, const char *argv[]) {
         return -1;
     }
 
-
-
     const auto was_loaded = audio.loadMusicIntoMemory("../../assets/jazz_piano_intro.wav");
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -104,7 +107,6 @@ int main(int argc, const char *argv[]) {
     float dt = 0.0f;
     float last_frame = 0.0f;
 
-
     audio.playMusicalSample(6);
     while (!glfwWindowShouldClose(window) && was_loaded) {
         glClearColor(0.2, 0.4, 0.2, 0.5);
@@ -112,14 +114,14 @@ int main(int argc, const char *argv[]) {
         auto current_frame = static_cast<float>(glfwGetTime());
         dt = (current_frame - last_frame);
         last_frame = current_frame;
-        scene.draw();
-        scene.handleInput(window, dt);
+        current_scene->draw();
+        current_scene->handleInput(window, dt);
         audio.handleInput(window);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    scene.destroy();
+    current_scene->destroy();
     // NOTE(threadedstream): should be called in main thread
     glfwTerminate();
     SDL_Quit();

@@ -33,13 +33,13 @@ set(TARGET_LINK_LIBRARIES  GLAD_LIB ${TARGET_LINK_LIBRARIES} STB_IMAGE_LIB)
 
 
 set(REALTIME_SRC_FILES
-        src/main.cpp
         src/renderer.cpp
         src/shader.cpp
         src/sample_scene.cpp
         src/camera.cpp
         src/lighting_scene.cpp
         src/audio.cpp
+        src/main.cpp
         )
 
 set(REALTIME_HEADER_FILES
@@ -52,7 +52,7 @@ set(REALTIME_HEADER_FILES
         include/camera.h
         include/lighting_scene.h
         include/audio.h
-        )
+        include/scene_manager.h include/filesystem.h)
 
 add_executable(realtime ${REALTIME_SRC_FILES} ${REALTIME_HEADER_FILES})
 target_include_directories(realtime
