@@ -27,6 +27,7 @@ struct SimpleVertex {
 struct Vertex {
     glm::vec3 position;
     glm::vec3 color;
+    glm::vec3 normal;
 } __attribute__((packed));
 
 
@@ -89,53 +90,53 @@ static constexpr SimpleVertex textured_cube_vertices[] = {
 };
 
 static constexpr Vertex colored_cube_vertices[] = {
-        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 0.0f, 0.0f}},
-        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{1.0f, 0.0f, 1.0f}},
-        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0.0f, 0.0f, 0.0f}},
+        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{1.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 0.0f, 1.0f}},
+        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f},  glm::vec3{1.0f, 1.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}, glm::vec3{1.0f, 1.0f,1.0f}},
+        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 1.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
 
-        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}},
-        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
 
-        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}},
-        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}},
-        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{1.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
 
-        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{0.0f, 0.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{0.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
 
-        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}},
-        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}},
-        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}},
-        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, -0.5f, -0.5f},  glm::vec3{1.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, -0.5f, 0.5f},   glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, 0.5f},  glm::vec3{0.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
 
-        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}},
-        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}},
-        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{0.0f, 0.0f,1.0f}},
-        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}}
+        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, -0.5f},   glm::vec3{1.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{0.5f, 0.5f, 0.5f},    glm::vec3{1.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, 0.5f, 0.5f},   glm::vec3{0.0f, 0.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}},
+        {glm::vec3{-0.5f, 0.5f, -0.5f},  glm::vec3{0.0f, 1.0f,1.0f}, glm::vec3{0.0f, 0.0f,1.0f}}
 
 };
 
 
-const auto random_colored_cube_data = [] (int32_t n_of_v) -> AdvancedVertex* {
-    auto ptr = static_cast<AdvancedVertex*>(calloc(n_of_v, sizeof(AdvancedVertex)));
+const auto random_colored_cube_data = [] (int32_t n_of_v) -> Vertex* {
+    auto ptr = static_cast<Vertex*>(calloc(n_of_v, sizeof(Vertex)));
     for (int32_t i = 0; i < n_of_v; i++) {
         ptr[i].position.x = random_real_between<float>(-1, 1);
         ptr[i].position.y = random_real_between<float>(-1, 1);

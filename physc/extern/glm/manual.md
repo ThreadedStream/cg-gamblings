@@ -284,7 +284,7 @@ To use these configurations files, you may need to set the `glm_DIR` variable to
 Use the `find_package` CMake command to load the configurations into your project. Lastly, either link your executable against the `glm::glm` target or add `${GLM_INCLUDE_DIRS}` to your target's include directories:
 
 ```cmake
-set(glm_DIR <installation prefix>/lib/cmake/glm) # if necessary
+set(glm_DIR <installation prefix>/ray_tracer/cmake/glm) # if necessary
 find_package(glm REQUIRED)
 target_link_libraries(<your executable> glm::glm)
 ```

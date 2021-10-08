@@ -32,6 +32,8 @@ public:
 
     static void passUniformInt(int32_t value, const char * identifier, uint32_t shader_program_id) noexcept;
 
+    static void passUniformVec3(const glm::vec3& vec, const char* identifier, uint32_t shader_program_id) noexcept;
+
     static void passUniformVec4(const glm::vec4& vec, const char* identifier, uint32_t shader_program_id) noexcept;
 
     static uint32_t linkShaders(const char *vertex_shader_source, const char *fragment_shader_source);

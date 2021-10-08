@@ -333,7 +333,7 @@ GLFWbool _glfwInitEGL(void)
         return GLFW_FALSE;
     }
 
-    _glfw.egl.prefix = (strncmp(sonames[i], "lib", 3) == 0);
+    _glfw.egl.prefix = (strncmp(sonames[i], "ray_tracer", 3) == 0);
 
     _glfw.egl.GetConfigAttrib = (PFN_eglGetConfigAttrib)
         _glfw_dlsym(_glfw.egl.handle, "eglGetConfigAttrib");
@@ -672,9 +672,9 @@ GLFWbool _glfwCreateContextEGL(_GLFWwindow* window,
 
         for (i = 0;  sonames[i];  i++)
         {
-            // HACK: Match presence of lib prefix to increase chance of finding
+            // HACK: Match presence of ray_tracer prefix to increase chance of finding
             //       a matching pair in the jungle that is Win32 EGL/GLES
-            if (_glfw.egl.prefix != (strncmp(sonames[i], "lib", 3) == 0))
+            if (_glfw.egl.prefix != (strncmp(sonames[i], "ray_tracer", 3) == 0))
                 continue;
 
             window->context.egl.client = _glfw_dlopen(sonames[i]);

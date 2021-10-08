@@ -15,9 +15,9 @@
 #include <stdio.h>
 #include <string>
 
-#pragma comment(lib, "Ws2_32.lib")
-#pragma comment(lib, "Mswsock.lib")
-#pragma comment(lib, "AdvApi32.lib")
+#pragma comment(lib, "Ws2_32.ray_tracer")
+#pragma comment(lib, "Mswsock.ray_tracer")
+#pragma comment(lib, "AdvApi32.ray_tracer")
 
 namespace spdlog {
 namespace details {

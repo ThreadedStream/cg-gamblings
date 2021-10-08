@@ -12,7 +12,7 @@ elseif(WIN32)
     set(SDL2_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/extern/SDL2/include)
     set(SDL2_LIB ${CMAKE_SOURCE_DIR}/extern/SDL2/lib/x64/SDL2.lib )
     set(SDL2_MIXER_LIB ${CMAKE_SOURCE_DIR}/extern/SDL2/lib/x64/SDL2_mixer.lib )
-   # set(SDL2_MIXER_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/SDL2/lib/x64/SDL2_mixer.dll)
+   # set(SDL2_MIXER_SHARED_LIB ${CMAKE_SOURCE_DIR}/extern/SDL2/ray_tracer/x64/SDL2_mixer.dll)
 endif()
 
 find_library(GLFW_LIB NAMES glfw3dll.lib libglfw.so HINTS ${CMAKE_SOURCE_DIR}/extern/glfw/build/src
@@ -21,7 +21,7 @@ find_library(GLFW_LIB NAMES glfw3dll.lib libglfw.so HINTS ${CMAKE_SOURCE_DIR}/ex
 find_library(FREETYPE_SHARED_LIB NAMES libfreetype.so.6 HINTS ${USR_LIB_GNU})
 
 if (UNIX)
-    set(TARGET_LINK_LIBRARIES ${GLFW_SHARED_LIB} SDL2::Core SDL2::Mixer X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread ${FREETYPE_SHARED_LIB})
+    set(TARGET_LINK_LIBRARIES ${GLFW_LIB} SDL2::Core SDL2::Mixer X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread ${FREETYPE_SHARED_LIB})
 elseif(WIN32)
     set(TARGET_LINK_LIBRARIES ${GLFW_LIB} ${SDL2_LIB} ${SDL2_MIXER_LIB})
 endif()

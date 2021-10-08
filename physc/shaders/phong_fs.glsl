@@ -2,8 +2,8 @@
 
 in vec3 color;
 in vec3 normal;
-in vec3 light_source_position;
-in vec3 to_viewer_direction;
+in vec3 light_src_pos_vs_out;
+in vec3 to_viewer_dir_vs_out;
 
 uniform vec4 ambient_color;
 uniform vec4 diffuse_color;
@@ -27,6 +27,9 @@ vec4 calculate_direction_vector(vec4 to_light_source, vec4 normal) {
 }
 
 void main() {
-
-    frag_color = ambient_color + diffuse_color + specular_color;
+    vec4 ambient_component = k_a * ambient_color;
+    vec4 diffuse_component = k_d*(dot(light_src_pos_vs_out, normal)*diffuse_color);
+    vec4 R = calculate_direction_vector(vec4(light_src_pos_vs_out, normal);
+    vec4 specular_component = k_s * (pow(dot(R, vec4(to_viewer_dir_vs_out, 1.0f)), alpha)) * specular_color;
+    frag_color = ambient_component + diffuse_component + specular_component;
 }

@@ -57,9 +57,13 @@ void LightingScene::prepareBufferObjects() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void *) color_offset);
     glEnableVertexAttribArray(1);
 
-    char *vertex_shader_source = fs::loadShaderFromFile("D:/toys/physc/physc/shaders/phong_vs.glsl");
+    const auto normal_offset = offsetof(Vertex, normal);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*) normal_offset);
+    glEnableVertexAttribArray(2);
+
+    char *vertex_shader_source = fs::loadShaderFromFile("/home/threadedstream/toys/physc/physc/shaders/phong_vs.glsl");
     assert(vertex_shader_source && "failed to load vertex shader");
-    char *fragment_shader_source = fs::loadShaderFromFile("D:/toys/physc/physc/shaders/phong_fs.glsl");
+    char *fragment_shader_source = fs::loadShaderFromFile("/home/threadedstream/toys/physc/physc/shaders/phong_fs.glsl");
     assert(fragment_shader_source && "failed to load fragment shader");
 
     shader_program_id_ = Shader::linkShaders(vertex_shader_source,
@@ -68,9 +72,12 @@ void LightingScene::prepareBufferObjects() {
     // unload shaders
     free(vertex_shader_source);
     free(fragment_shader_source);
+    vertex_shader_source = nullptr;
+    fragment_shader_source = nullptr;
 
     Shader::use(shader_program_id_);
-    Shader::passUniformVec4(glm::vec3{0, 10, -2}, "light_source_position", )
+    Shader::passUniformVec3(glm::vec3{0, 10, -2}, "light_source_position", shader_program_id_);
+    Shader::passUniformVec3(glm::vec3{0, 0, 1}, "to_viewer_direction", shader_program_id_);
     Shader::passUniformVec4(ambient_color_, "ambient_color", shader_program_id_);
     Shader::passUniformVec4(diffuse_color_, "diffuse_color", shader_program_id_);
     Shader::passUniformVec4(specular_color_, "specular_color", shader_program_id_);

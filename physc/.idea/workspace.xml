@@ -14,7 +14,56 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e99689c-856f-42c8-809f-4d8c4e052d21" name="Changes" comment="just added audio support" />
+    <list default="true" id="2e99689c-856f-42c8-809f-4d8c4e052d21" name="Changes" comment="just added audio support">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/SDL2/include/SDL_config_macosx.h" beforeDir="false" afterPath="$PROJECT_DIR$/extern/SDL2/include/SDL_config_macosx.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/SDL2/include/SDL_config_macosx.h.orig" beforeDir="false" afterPath="$PROJECT_DIR$/extern/SDL2/include/SDL_config_macosx.h.orig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/SDL2/include/SDL_opengl.h" beforeDir="false" afterPath="$PROJECT_DIR$/extern/SDL2/include/SDL_opengl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/box2d/extern/glfw/src/egl_context.c" beforeDir="false" afterPath="$PROJECT_DIR$/extern/box2d/extern/glfw/src/egl_context.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/glm/manual.md" beforeDir="false" afterPath="$PROJECT_DIR$/extern/glm/manual.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/spdlog/include/spdlog/details/tcp_client-windows.h" beforeDir="false" afterPath="$PROJECT_DIR$/extern/spdlog/include/spdlog/details/tcp_client-windows.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/spdlog/include/spdlog/details/udp_client-windows.h" beforeDir="false" afterPath="$PROJECT_DIR$/extern/spdlog/include/spdlog/details/udp_client-windows.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/spdlog/src/fmt.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/extern/spdlog/src/fmt.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/spdlog/tests/catch.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/extern/spdlog/tests/catch.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/stb/stb_image.h" beforeDir="false" afterPath="$PROJECT_DIR$/extern/stb/stb_image.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/animation.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/animation.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/asset_loader.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/asset_loader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/broker.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/broker.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/camera.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/circle.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/circle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/draw.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/draw.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/entity.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/entity.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/hittable.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/hittable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/map.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/map.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/material.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/material.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/math_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/math_utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/memory.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/memory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/plane.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/plane.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/ppm.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/ppm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/ray.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/ray.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/render.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/render.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/scene.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/scene.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/include/sphere.h" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/include/sphere.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/animation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/animation.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/camera.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/draw.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/draw.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/map.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/memory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/memory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/plane.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/plane.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/ray.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/ray.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/render.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/sphere.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ray_tracer/src/sphere.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/realtime/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/realtime/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/realtime/include/shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/realtime/include/shader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/realtime/include/vertices.h" beforeDir="false" afterPath="$PROJECT_DIR$/realtime/include/vertices.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/realtime/src/lighting_scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/realtime/src/lighting_scene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/realtime/src/shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/realtime/src/shader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shaders/phong_fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/shaders/phong_fs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shaders/phong_vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/shaders/phong_vs.glsl" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -207,6 +256,8 @@
       <workItem from="1632932105316" duration="7900000" />
       <workItem from="1633006612798" duration="8615000" />
       <workItem from="1633093951176" duration="364000" />
+      <workItem from="1633678540086" duration="4436000" />
+      <workItem from="1633713931608" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="added drawing circle routine">
       <created>1631127082090</created>
@@ -392,19 +443,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/lib/src/plane.cpp</url>
+          <url>file://$PROJECT_DIR$/ray_tracer/src/plane.cpp</url>
           <line>6</line>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/realtime/src/main.cpp</url>
-          <line>52</line>
-          <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/realtime/src/audio.cpp</url>
           <line>6</line>
           <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/realtime/include/filesystem.h</url>
+          <line>9</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
